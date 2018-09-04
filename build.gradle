@@ -1,7 +1,6 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-  ext.kotlin_version = '1.2.61'
   ext {
     KOTLIN_VERSION = '1.2.61'
     GRADLE_TOOLS_VERSION = "3.1.4"
@@ -15,8 +14,7 @@ buildscript {
     RETROFIT_VERSION = "2.4.0"
     RETROFIT_ADAPTER_VERSION = "2.3.0"
     RETROFIT_CONVERTER_VERSION = "2.4.0"
-    DAGGER_VERSION = "2.14.1"
-    DAGGER_SUPPORT_VERSION = "2.16"
+    DAGGER_VERSION = "2.16"
     ROOM_VERSION = "1.1.1"
     UIBINDING_VERSION = "0.0.11"
     RX_PREFERENCE_VERSION = "0.0.4"
@@ -27,7 +25,7 @@ buildscript {
     jcenter()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:3.1.4'
+    classpath "com.android.tools.build:gradle:$GRADLE_TOOLS_VERSION"
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$KOTLIN_VERSION"
 
     // NOTE: Do not place your application dependencies here; they belong
