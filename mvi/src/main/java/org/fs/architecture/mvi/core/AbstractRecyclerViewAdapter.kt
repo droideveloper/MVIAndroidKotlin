@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fs.mvi.core
+package org.fs.architecture.mvi.core
 
 import android.support.v7.widget.RecyclerView
-import org.fs.mvi.common.PropertyChangedListener
-import org.fs.mvi.util.ObservableList
+import org.fs.architecture.mvi.common.PropertyChangedListener
+import org.fs.architecture.mvi.util.ObservableList
 
 abstract class AbstractRecyclerViewAdapter<D, VH>(private val dataSet: ObservableList<D>): RecyclerView.Adapter<VH>(), PropertyChangedListener where VH: AbstractRecyclerViewHolder<D> {
 

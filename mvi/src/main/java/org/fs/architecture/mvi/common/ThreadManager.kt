@@ -13,13 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fs.mvi.core
+package org.fs.architecture.mvi.common
 
-import android.support.v7.widget.RecyclerView
-import android.view.View
+import android.os.Handler
+import android.os.Looper
 
-abstract class AbstractRecyclerViewHolder<D>(view: View): RecyclerView.ViewHolder(view) {
+class ThreadManager private constructor() {
 
-  abstract fun bind(value: D)
-  abstract fun unbind()
+  companion object {
+    @JvmStatic private val uiHandler = Handler(Looper.myLooper())
+    @JvmStatic private val DELAY_MS = 500L
+
+    @JvmStatic fun runOnUiThread(task: Runnable) = uiHandler.post(task)
+    @JvmStatic fun runOnUiThreadDelayed(task: Runnable, delay: Long = DELAY_MS) = uiHandler.postDelayed(task, delay)
+    @JvmStatic fun clearAll() = uiHandler.removeCallbacksAndMessages(null)
+    @JvmStatic fun clear(task: Runnable) = uiHandler.removeCallbacks(task)
+  }
 }

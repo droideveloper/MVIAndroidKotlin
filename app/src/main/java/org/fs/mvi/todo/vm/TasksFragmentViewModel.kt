@@ -13,11 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fs.mvi.common
+package org.fs.mvi.todo.vm
 
 import io.reactivex.Observable
+import org.fs.architecture.mvi.common.SyncState
+import org.fs.architecture.mvi.common.ViewModel
+import org.fs.mvi.todo.model.TaskModel
 
-interface View<M> where M: Model {
-  fun render(model: M)
-  fun viewEvent(): Observable<Event>
+interface TasksFragmentViewModel: ViewModel {
+
+  fun syncState(): Observable<SyncState>
+
+  fun model(): Observable<TaskModel>
 }

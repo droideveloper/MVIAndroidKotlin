@@ -13,14 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fs.mvi.common
+package org.fs.architecture.mvi.common
 
-import io.reactivex.Observable
-
-sealed class Intent
-
-abstract class ReducerIntent<T>: Intent(), Reducer<T>
-abstract class ObservableIntent<T>: Intent(), () -> Observable<Reducer<T>>
-
-// reducer definition
-typealias Reducer<T> = (T) -> T
+interface PropertyChangedListener {
+  fun notifyItemsRemoved(index: Int, size: Int)
+  fun notifyItemsInserted(index: Int, size: Int)
+  fun notifyItemsChanged(index: Int, size: Int)
+}

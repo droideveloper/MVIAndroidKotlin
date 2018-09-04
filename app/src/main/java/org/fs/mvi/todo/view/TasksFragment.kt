@@ -13,20 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fs.mvi.common
+package org.fs.mvi.todo.view
 
-import android.os.Handler
-import android.os.Looper
+import io.reactivex.Observable
+import org.fs.architecture.mvi.common.Event
+import org.fs.architecture.mvi.core.AbstractFragment
+import org.fs.mvi.todo.R
+import org.fs.mvi.todo.model.TaskModel
+import org.fs.mvi.todo.vm.TasksFragmentViewModel
 
-class ThreadManager private constructor() {
+class TasksFragment : AbstractFragment<TasksFragmentViewModel>(), TasksFragmentView {
 
-  companion object {
-    @JvmStatic private val uiHandler = Handler(Looper.myLooper())
-    @JvmStatic private val DELAY_MS = 500L
+  override val layoutRes: Int get() = R.layout.abc_search_view
 
-    @JvmStatic fun runOnUiThread(task: Runnable) = uiHandler.post(task)
-    @JvmStatic fun runOnUiThreadDelayed(task: Runnable, delay: Long = DELAY_MS) = uiHandler.postDelayed(task, delay)
-    @JvmStatic fun clearAll() = uiHandler.removeCallbacksAndMessages(null)
-    @JvmStatic fun clear(task: Runnable) = uiHandler.removeCallbacks(task)
+  override fun attach() {
+
   }
+
+  override fun detach() {
+
+  }
+
+  override fun render(e: TaskModel) {
+
+  }
+
+  override fun viewEvent(): Observable<Event> = super.viewEvents()
 }

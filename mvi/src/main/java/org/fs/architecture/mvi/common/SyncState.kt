@@ -13,17 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fs.mvi.core
+package org.fs.architecture.mvi.common
 
-import com.jakewharton.rxrelay2.PublishRelay
-import io.reactivex.disposables.CompositeDisposable
-import org.fs.mvi.common.Intent
-import org.fs.mvi.common.ViewModel
+sealed class SyncState
 
-abstract class AbstractViewModel: ViewModel {
+object IDLE: SyncState() {
+  override fun toString(): String = "idle"
+}
+data class PROCESS(val type: ProcessType): SyncState()
+data class ERROR(val error: Throwable): SyncState()
 
-  protected val disposeBag by lazy { CompositeDisposable() }
-  protected val intents by lazy { PublishRelay.create<Intent>() }
-
-  override fun accept(intent: Intent) = intents.accept(intent)
+enum class ProcessType {
+  REFRESH,
+  LOAD_MORE,
+  CREATE,
+  UPDATE,
+  DELETE
 }

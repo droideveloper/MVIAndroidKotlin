@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fs.mvi.common
+package org.fs.architecture.mvi.common
 
-interface PropertyChangedListener {
-  fun notifyItemsRemoved(index: Int, size: Int)
-  fun notifyItemsInserted(index: Int, size: Int)
-  fun notifyItemsChanged(index: Int, size: Int)
+interface ViewModel {
+  fun attach()
+  fun detach()
+  fun accept(intent: Intent)
 }

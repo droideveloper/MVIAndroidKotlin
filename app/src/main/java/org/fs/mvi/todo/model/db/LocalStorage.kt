@@ -13,20 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fs.mvi.common 
+package org.fs.mvi.todo.model.db
 
-sealed class SyncState
+import android.arch.persistence.room.Database
+import android.arch.persistence.room.TypeConverters
+import org.fs.architecture.mvi.common.db.Converters
+import org.fs.mvi.todo.model.entity.Task
 
-object IDLE: SyncState() {
-  override fun toString(): String = "idle"
-}
-data class PROCESS(val type: ProcessType): SyncState()
-data class ERROR(val error: Throwable): SyncState()
-
-enum class ProcessType {
-  REFRESH,
-  LOAD_MORE,
-  CREATE,
-  UPDATE,
-  DELETE
+@Database(entities = [Task::class], version = 1)
+@TypeConverters(value = [Converters::class])
+abstract class LocalStorage {
+  abstract fun taskDao(): TaskDao
 }

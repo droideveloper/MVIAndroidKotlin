@@ -13,34 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fs.mvi.core
+package org.fs.architecture.mvi.core
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.support.v7.app.AppCompatActivity
 import com.jakewharton.rxrelay2.PublishRelay
-import dagger.android.support.AndroidSupportInjection
+import dagger.android.AndroidInjection
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
-import org.fs.mvi.common.Event
-import org.fs.mvi.common.ViewModel
+import org.fs.architecture.mvi.common.Event
+import org.fs.architecture.mvi.common.ViewModel
 import javax.inject.Inject
 
-abstract class AbstractFragment<VM>: Fragment() where VM: ViewModel {
+abstract class AbstractActivity<VM>: AppCompatActivity() where VM: ViewModel {
 
   protected val disposeBag by lazy { CompositeDisposable() }
   protected val viewEvents by lazy { PublishRelay.create<Event>() }
+
   protected abstract val layoutRes: Int
 
   @Inject lateinit var viewModel: VM
 
-  override fun onCreateView(factory: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = factory.inflate(layoutRes, container, false)
-
-  override fun onActivityCreated(savedInstanceState: Bundle?) {
-    AndroidSupportInjection.inject(this)
-    super.onActivityCreated(savedInstanceState)
+  override fun onCreate(savedInstanceState: Bundle?) {
+    AndroidInjection.inject(this)
+    super.onCreate(savedInstanceState)
+    setContentView(layoutRes)
   }
 
   override fun onStart() {
@@ -55,8 +52,8 @@ abstract class AbstractFragment<VM>: Fragment() where VM: ViewModel {
     super.onStop()
   }
 
+  fun viewEvents(): Observable<Event> = viewEvents.hide()
+
   abstract fun attach()
   abstract fun detach()
-
-  fun viewEvents(): Observable<Event> = viewEvents.hide()
 }

@@ -13,6 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fs.mvi.common
+package org.fs.architecture.mvi.common
 
-interface Event
+import io.reactivex.Observable
+
+interface View<M> where M: Model {
+  fun render(model: M)
+  fun viewEvent(): Observable<Event>
+}

@@ -7,7 +7,7 @@ android {
   compileSdkVersion 27
   defaultConfig {
     applicationId "org.fs.mvi.todo"
-    minSdkVersion 16
+    minSdkVersion 19
     targetSdkVersion 27
     versionCode 1
     versionName "1.0"
@@ -45,7 +45,12 @@ androidExtensions {
 
 dependencies {
   implementation "com.android.support:appcompat-v7:$SUPPORT_LIBRARIES_VERSION"
+  implementation "com.android.support.constraint:constraint-layout:$ANDROID_CONSTRAINT_VERSION"
+  api project(":mvi")
 
+  implementation "android.arch.persistence.room:rxjava2:$ROOM_VERSION"
+  implementation "android.arch.persistence.room:runtime:$ROOM_VERSION"
+  kapt "android.arch.persistence.room:compiler:$ROOM_VERSION"
 
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$KOTLIN_VERSION"
 }

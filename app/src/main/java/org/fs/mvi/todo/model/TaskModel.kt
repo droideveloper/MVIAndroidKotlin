@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fs.mvi.common
+package org.fs.mvi.todo.model
 
-import android.content.Context
+import org.fs.architecture.mvi.common.IDLE
+import org.fs.architecture.mvi.common.Model
+import org.fs.architecture.mvi.common.SyncState
+import org.fs.mvi.todo.model.entity.Task
 
-interface Navigation<T> {
-  fun navigate(context: Context, value: T)
-}
+data class TaskModel(val data: List<Task> = emptyList(), val state: SyncState = IDLE): Model

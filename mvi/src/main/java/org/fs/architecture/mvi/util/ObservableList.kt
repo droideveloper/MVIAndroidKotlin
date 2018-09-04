@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fs.mvi.util
+package org.fs.architecture.mvi.util
 
-import org.fs.mvi.common.PropertyChangedListener
+import org.fs.architecture.mvi.common.PropertyChangedListener
 import java.util.*
 
 open class ObservableList<T>: ArrayList<T>() {

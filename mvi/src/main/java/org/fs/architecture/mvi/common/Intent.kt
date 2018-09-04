@@ -13,10 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fs.mvi.common
+package org.fs.architecture.mvi.common
 
-interface ViewModel {
-  fun attach()
-  fun detach()
-  fun accept(intent: Intent)
-}
+import io.reactivex.Observable
+
+sealed class Intent
+
+abstract class ReducerIntent<T>: Intent(), Reducer<T>
+abstract class ObservableIntent<T>: Intent(), () -> Observable<Reducer<T>>
+
+// reducer definition
+typealias Reducer<T> = (T) -> T

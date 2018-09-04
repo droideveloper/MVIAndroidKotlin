@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fs.mvi.common
+package org.fs.architecture.mvi.common
 
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fs.mvi.util
+package org.fs.architecture.mvi.util
 
 import android.os.Build
 import android.support.annotation.LayoutRes
@@ -24,9 +24,9 @@ import android.view.ViewGroup
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-import org.fs.mvi.common.Event
-import org.fs.mvi.common.Intent
-import org.fs.mvi.common.Reducer
+import org.fs.architecture.mvi.common.Event
+import org.fs.architecture.mvi.common.Intent
+import org.fs.architecture.mvi.common.Reducer
 import java.io.File
 
 fun <T> Observable<T>.toViewEvent(block:(T) -> Event): Observable<Event> = map(block)
