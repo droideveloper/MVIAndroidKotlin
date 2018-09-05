@@ -18,9 +18,10 @@ package org.fs.architecture.mvi.core
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.disposables.CompositeDisposable
 import org.fs.architecture.mvi.common.Intent
+import org.fs.architecture.mvi.common.View
 import org.fs.architecture.mvi.common.ViewModel
 
-abstract class AbstractViewModel: ViewModel {
+abstract class AbstractViewModel<V>: ViewModel where V: View {
 
   protected val disposeBag by lazy { CompositeDisposable() }
   protected val intents by lazy { PublishRelay.create<Intent>() }

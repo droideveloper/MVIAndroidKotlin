@@ -38,6 +38,7 @@ abstract class AbstractActivity<VM>: AppCompatActivity() where VM: ViewModel {
     AndroidInjection.inject(this)
     super.onCreate(savedInstanceState)
     setContentView(layoutRes)
+    setUp(savedInstanceState ?: intent.extras)
   }
 
   override fun onStart() {
@@ -54,6 +55,7 @@ abstract class AbstractActivity<VM>: AppCompatActivity() where VM: ViewModel {
 
   fun viewEvents(): Observable<Event> = viewEvents.hide()
 
+  abstract fun setUp(state: Bundle?)
   abstract fun attach()
   abstract fun detach()
 }

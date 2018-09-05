@@ -41,6 +41,7 @@ abstract class AbstractFragment<VM>: Fragment() where VM: ViewModel {
   override fun onActivityCreated(savedInstanceState: Bundle?) {
     AndroidSupportInjection.inject(this)
     super.onActivityCreated(savedInstanceState)
+    setUp(savedInstanceState ?: arguments)
   }
 
   override fun onStart() {
@@ -57,6 +58,7 @@ abstract class AbstractFragment<VM>: Fragment() where VM: ViewModel {
 
   abstract fun attach()
   abstract fun detach()
+  abstract fun setUp(state: Bundle?)
 
   fun viewEvents(): Observable<Event> = viewEvents.hide()
 }

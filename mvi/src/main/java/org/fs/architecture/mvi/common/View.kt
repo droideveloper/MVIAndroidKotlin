@@ -17,7 +17,7 @@ package org.fs.architecture.mvi.common
 
 import io.reactivex.Observable
 
-interface View<M> where M: Model {
-  fun render(model: M)
+interface View {
+  fun isAvailable(): Boolean
   fun viewEvent(): Observable<Event>
 }
