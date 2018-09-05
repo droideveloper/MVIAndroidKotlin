@@ -15,8 +15,10 @@
  */
 package org.fs.architecture.mvi.core
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -56,9 +58,17 @@ abstract class AbstractFragment<VM>: Fragment() where VM: ViewModel {
     super.onStop()
   }
 
+  open fun finish() = Unit
+  open fun dismiss() = Unit
+  open fun isAvailable(): Boolean = isAdded && activity != null
+
+  open fun stringResource(stringRes: Int): String = getString(stringRes)
+  open fun context(): Context? = context
+  open fun supportFragmentManager(): FragmentManager = childFragmentManager
+
   abstract fun attach()
   abstract fun detach()
   abstract fun setUp(state: Bundle?)
 
-  fun viewEvents(): Observable<Event> = viewEvents.hide()
+  open fun viewEvents(): Observable<Event> = viewEvents.hide()
 }

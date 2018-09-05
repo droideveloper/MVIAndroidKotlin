@@ -15,9 +15,21 @@
  */
 package org.fs.architecture.mvi.common
 
+import android.content.Context
+import android.content.Intent
+import android.support.v4.app.FragmentManager
 import io.reactivex.Observable
 
 interface View {
+  fun startActivity(intent: Intent?)
+  fun startActivityForResult(intent: Intent?, requestCode: Int)
+
+  fun finish()
+  fun dismiss()
+  fun getSupportFragmentManager(): FragmentManager
+
+  fun getStringResource(stringRes: Int): String?
   fun isAvailable(): Boolean
+  fun getContext(): Context?
   fun viewEvent(): Observable<Event>
 }

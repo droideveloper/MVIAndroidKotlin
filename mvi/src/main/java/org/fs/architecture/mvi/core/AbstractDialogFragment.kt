@@ -17,30 +17,34 @@ package org.fs.architecture.mvi.core
 
 import android.content.Context
 import android.os.Bundle
+import android.support.v4.app.DialogFragment
 import android.support.v4.app.FragmentManager
-import android.support.v7.app.AppCompatActivity
+import android.support.v4.app.FragmentTransaction
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import com.jakewharton.rxrelay2.PublishRelay
-import dagger.android.AndroidInjection
+import dagger.android.support.AndroidSupportInjection
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import org.fs.architecture.mvi.common.Event
 import org.fs.architecture.mvi.common.ViewModel
 import javax.inject.Inject
 
-abstract class AbstractActivity<VM>: AppCompatActivity() where VM: ViewModel {
+abstract class AbstractDialogFragment<VM>: DialogFragment() where VM: ViewModel {
 
   protected val disposeBag by lazy { CompositeDisposable() }
   protected val viewEvents by lazy { PublishRelay.create<Event>() }
-
   protected abstract val layoutRes: Int
 
   @Inject lateinit var viewModel: VM
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    AndroidInjection.inject(this)
-    super.onCreate(savedInstanceState)
-    setContentView(layoutRes)
-    setUp(savedInstanceState ?: intent.extras)
+  override fun onCreateView(factory: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = factory.inflate(layoutRes, container, false)
+
+  override fun onActivityCreated(savedInstanceState: Bundle?) {
+    AndroidSupportInjection.inject(this)
+    super.onActivityCreated(savedInstanceState)
+    setUp(savedInstanceState ?: arguments)
   }
 
   override fun onStart() {
@@ -55,16 +59,30 @@ abstract class AbstractActivity<VM>: AppCompatActivity() where VM: ViewModel {
     super.onStop()
   }
 
-  open fun dismiss() = Unit
-  open fun isAvailable(): Boolean = !isFinishing
+  override fun show(manager: FragmentManager?, tag: String?) {
+    if (manager != null) {
+      show(manager.beginTransaction(), tag)
+    }
+  }
+
+  override fun show(transaction: FragmentTransaction?, tag: String?): Int {
+    if (transaction != null) {
+      return transaction.add(this, tag)
+          .commit()
+    }
+    return -1
+  }
+
+  open fun finish() = Unit
+  open fun isAvailable(): Boolean = isAdded && activity != null
 
   open fun stringResource(stringRes: Int): String = getString(stringRes)
-  open fun context(): Context? = this
-  open fun supportFragmentManager(): FragmentManager = supportFragmentManager
+  open fun context(): Context? = context
+  open fun supportFragmentManager(): FragmentManager = childFragmentManager
 
-  open fun viewEvents(): Observable<Event> = viewEvents.hide()
-
-  abstract fun setUp(state: Bundle?)
   abstract fun attach()
   abstract fun detach()
+  abstract fun setUp(state: Bundle?)
+
+  open fun viewEvents(): Observable<Event> = viewEvents.hide()
 }
