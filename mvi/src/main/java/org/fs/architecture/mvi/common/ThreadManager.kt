@@ -18,7 +18,7 @@ package org.fs.architecture.mvi.common
 import android.os.Handler
 import android.os.Looper
 
-class ThreadManager private constructor() {
+sealed class ThreadManager {
 
   companion object {
     @JvmStatic private val uiHandler = Handler(Looper.myLooper())
