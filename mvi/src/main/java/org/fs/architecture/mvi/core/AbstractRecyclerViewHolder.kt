@@ -20,6 +20,8 @@ import android.view.View
 
 abstract class AbstractRecyclerViewHolder<D>(view: View): RecyclerView.ViewHolder(view) {
 
+  protected abstract val layoutRes: Int
+
   abstract fun bind(value: D)
   abstract fun unbind()
 }

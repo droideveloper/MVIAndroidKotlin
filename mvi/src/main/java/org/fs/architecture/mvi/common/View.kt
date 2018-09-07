@@ -26,10 +26,10 @@ interface View {
 
   fun finish()
   fun dismiss()
-  fun getSupportFragmentManager(): FragmentManager
+  fun supportFragmentManager(): FragmentManager
 
-  fun getStringResource(stringRes: Int): String?
+  fun stringResource(stringRes: Int): String?
   fun isAvailable(): Boolean
-  fun getContext(): Context?
+  fun context(): Context?
   fun viewEvent(): Observable<Event>
 }
