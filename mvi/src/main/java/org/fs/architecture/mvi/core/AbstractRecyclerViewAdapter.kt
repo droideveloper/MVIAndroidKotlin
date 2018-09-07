@@ -19,7 +19,7 @@ import android.support.v7.widget.RecyclerView
 import org.fs.architecture.mvi.common.PropertyChangedListener
 import org.fs.architecture.mvi.util.ObservableList
 
-abstract class AbstractRecyclerViewAdapter<D, VH>(private val dataSet: ObservableList<D>): RecyclerView.Adapter<VH>(), PropertyChangedListener where VH: AbstractRecyclerViewHolder<D> {
+abstract class AbstractRecyclerViewAdapter<D, VH>(protected val dataSet: ObservableList<D>): RecyclerView.Adapter<VH>(), PropertyChangedListener where VH: AbstractRecyclerViewHolder<D> {
 
   override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
     super.onAttachedToRecyclerView(recyclerView)
