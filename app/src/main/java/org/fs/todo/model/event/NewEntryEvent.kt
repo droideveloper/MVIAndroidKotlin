@@ -13,18 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fs.todo.view
+package org.fs.todo.model.event
 
-import io.reactivex.Observable
-import org.fs.architecture.mvi.common.View
-import org.fs.todo.model.EntryModel
-import org.fs.todo.model.event.LoadMoreEvent
-import org.fs.todo.model.event.NewEntryEvent
-import org.fs.todo.model.event.RefreshEvent
+import org.fs.architecture.mvi.common.Event
 
-
-interface EntryFragmentView: View {
-  fun loadMore(): Observable<LoadMoreEvent>
-  fun refresh(): Observable<RefreshEvent>
-  fun newEntry(): Observable<NewEntryEvent>
-}
+data class NewEntryEvent(val description: String) : Event

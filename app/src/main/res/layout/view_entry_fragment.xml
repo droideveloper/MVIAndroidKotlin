@@ -28,6 +28,8 @@
     android:layout_height="36dp"
     android:layout_margin="4dip"
     android:padding="4dip"
+    android:inputType="text"
+    android:imeOptions="actionDone"
     android:hint="@string/str_edit_text_hint"
     android:textAppearance="@style/TextAppearanceNormal"
     android:background="@drawable/view_edit_text_bg"
