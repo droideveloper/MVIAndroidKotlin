@@ -1,0 +1,4 @@
+<resources>
+  <string name="app_name">MVI TODO</string>
+  <string name="str_edit_text_hint">What needs to be done?</string>
+</resources>

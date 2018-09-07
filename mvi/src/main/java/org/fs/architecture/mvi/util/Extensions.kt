@@ -24,14 +24,17 @@ import android.view.ViewGroup
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-import org.fs.architecture.mvi.common.Event
-import org.fs.architecture.mvi.common.Intent
-import org.fs.architecture.mvi.common.Reducer
+import org.fs.architecture.mvi.common.*
 import java.io.File
 
 fun <T> Observable<T>.toViewEvent(block:(T) -> Event): Observable<Event> = map(block)
 fun Observable<Event>.toIntent(block: (Event) -> Intent): Observable<Intent> = map(block)
-fun <T> Observable<Intent>.toReducer(block:(Intent) -> Reducer<T>): Observable<Reducer<T>> = map(block)
+fun <T> Observable<Intent>.toReducer(): Observable<Reducer<T>> = concatMap { source ->
+  return@concatMap when(source) {
+    is ReducerIntent<*> -> Observable.just((source as ReducerIntent<T>))
+    is ObservableIntent<*> -> (source as ObservableIntent<T>)()
+  }
+}
 
 operator fun CompositeDisposable.plusAssign(d: Disposable) { add(d) }
 

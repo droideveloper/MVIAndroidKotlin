@@ -1,5 +1,5 @@
 /*
- * MVI Kotlin Copyright (C) 2018 Fatih.
+ * MVI App Copyright (C) 2018 Fatih.
  *  
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,23 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fs.architecture.mvi.common
+package org.fs.todo.vm
 
-import android.content.Context
-import android.content.Intent
-import android.support.v4.app.FragmentManager
 import io.reactivex.Observable
+import org.fs.architecture.mvi.common.SyncState
+import org.fs.architecture.mvi.common.ViewModel
+import org.fs.todo.model.EntryModel
 
-interface View {
-  fun startActivity(intent: Intent?)
-  fun startActivityForResult(intent: Intent?, requestCode: Int)
-
-  fun finish()
-  fun dismiss()
-  fun supportFragmentManager(): FragmentManager
-
-  fun stringResource(stringRes: Int): String?
-  fun isAvailable(): Boolean
-  fun context(): Context?
-  fun viewEvents(): Observable<Event>
+interface EntryFragmentViewModel : ViewModel {
+  fun state(): Observable<SyncState>
+  fun model(): Observable<EntryModel>
 }

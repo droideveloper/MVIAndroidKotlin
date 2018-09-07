@@ -1,5 +1,5 @@
 /*
- * MVI Kotlin Copyright (C) 2018 Fatih.
+ * MVI Copyright (C) 2018 Fatih.
  *  
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,21 +15,9 @@
  */
 package org.fs.architecture.mvi.common
 
-import android.content.Context
-import android.content.Intent
-import android.support.v4.app.FragmentManager
-import io.reactivex.Observable
+import javax.inject.Scope
 
-interface View {
-  fun startActivity(intent: Intent?)
-  fun startActivityForResult(intent: Intent?, requestCode: Int)
 
-  fun finish()
-  fun dismiss()
-  fun supportFragmentManager(): FragmentManager
-
-  fun stringResource(stringRes: Int): String?
-  fun isAvailable(): Boolean
-  fun context(): Context?
-  fun viewEvents(): Observable<Event>
-}
+@Retention(AnnotationRetention.RUNTIME)
+@Scope
+annotation class ForActivity
