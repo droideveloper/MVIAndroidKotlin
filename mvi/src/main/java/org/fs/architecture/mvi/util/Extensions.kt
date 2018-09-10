@@ -31,7 +31,7 @@ fun <T> Observable<T>.toViewEvent(block:(T) -> Event): Observable<Event> = map(b
 fun Observable<Event>.toIntent(block: (Event) -> Intent): Observable<Intent> = map(block)
 fun <T> Observable<Intent>.toReducer(): Observable<Reducer<T>> = concatMap { source ->
   return@concatMap when(source) {
-    is ReducerIntent<*> -> Observable.just((source as ReducerIntent<T>))
+    is ReducerIntent<*> -> Observable.just(source as ReducerIntent<T>)
     is ObservableIntent<*> -> (source as ObservableIntent<T>)()
   }
 }

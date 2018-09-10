@@ -29,7 +29,7 @@ interface EntryDao {
   fun queryByState(state: Int, createdAt: Long, take: Int): Flowable<List<Entry>>
 
   @Query("SELECT * FROM entries " +
-      "WHERE state != :state AND createdAt <= createdAt " +
+      "WHERE state != :state AND createdAt <= :createdAt " +
       "ORDER BY createdAt DESC " +
       "LIMIT :take")
   fun queryByNotState(state: Int, createdAt: Long, take: Int): Flowable<List<Entry>>

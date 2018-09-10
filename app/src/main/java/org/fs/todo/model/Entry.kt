@@ -16,6 +16,7 @@
 package org.fs.todo.model
 
 import android.arch.persistence.room.Entity
+import android.arch.persistence.room.Ignore
 import android.arch.persistence.room.PrimaryKey
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
@@ -23,7 +24,7 @@ import org.fs.todo.util.C
 import java.util.*
 
 @Entity(tableName = C.ENTRY_TABLE_NAME)
-@Parcelize data class Entry(
+@Parcelize data class Entry @Ignore constructor(
     @field: PrimaryKey var entryId: String = UUID.randomUUID().toString(),
     var description: String,
     var state: EntryState = EntryState.ACTIVE,

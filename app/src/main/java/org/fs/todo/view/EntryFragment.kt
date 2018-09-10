@@ -98,7 +98,7 @@ class EntryFragment: AbstractFragment<EntryFragmentViewModel>(), EntryFragmentVi
 
   override fun attach() {
     // TODO change this
-    disposeBag += loadMore().subscribe(viewModel::accept)
+    // disposeBag += loadMore().subscribe(viewModel::accept)
   }
 
   override fun detach() = disposeBag.clear()

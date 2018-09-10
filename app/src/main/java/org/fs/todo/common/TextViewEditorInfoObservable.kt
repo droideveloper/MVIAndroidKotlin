@@ -25,7 +25,11 @@ import org.fs.rx.extensions.util.checkMainThread
 class TextViewEditorInfoObservable(private val view: TextView): Observable<Int>() {
 
   override fun subscribeActual(observer: Observer<in Int>) {
-    if (observer.checkMainThread())
+    if (observer.checkMainThread()) {
+      val listener = Listener(view, observer)
+      observer.onSubscribe(listener)
+      view.setOnEditorActionListener(listener)
+    }
   }
 
   internal class Listener(private val view: TextView, private val observer: Observer<in Int>): MainThreadDisposable(), TextView.OnEditorActionListener {

@@ -16,15 +16,16 @@
 package org.fs.todo.model.db
 
 import android.arch.persistence.room.Database
+import android.arch.persistence.room.RoomDatabase
 import android.arch.persistence.room.TypeConverters
 import org.fs.architecture.mvi.common.db.Converters
 import org.fs.todo.model.Entry
 import org.fs.todo.util.C
 import org.fs.todo.util.EntryStateConverter
 
-@Database(entities = [Entry::class], version = C.DATABASE_VERSION)
+@Database(entities = [Entry::class], version = C.DATABASE_VERSION, exportSchema = false)
 @TypeConverters(value = [Converters::class, EntryStateConverter::class])
-abstract class LocalStorage {
+abstract class LocalStorage: RoomDatabase() {
 
   abstract fun entryDao(): EntryDao
 }
