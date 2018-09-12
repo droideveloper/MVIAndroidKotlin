@@ -15,6 +15,7 @@
  */
 package org.fs.architecture.mvi.core
 
+import android.arch.lifecycle.*
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
@@ -31,11 +32,13 @@ import org.fs.architecture.mvi.common.Event
 import org.fs.architecture.mvi.common.ViewModel
 import javax.inject.Inject
 
-abstract class AbstractDialogFragment<VM>: DialogFragment() where VM: ViewModel {
+abstract class AbstractDialogFragment<VM>: DialogFragment(), LifecycleOwner, LifecycleObserver where VM: ViewModel {
 
   protected val disposeBag by lazy { CompositeDisposable() }
   protected val viewEvents by lazy { PublishRelay.create<Event>() }
   protected abstract val layoutRes: Int
+
+  private val lifecycle by lazy { LifecycleRegistry(this) }
 
   @Inject lateinit var viewModel: VM
 
@@ -45,18 +48,8 @@ abstract class AbstractDialogFragment<VM>: DialogFragment() where VM: ViewModel 
     AndroidSupportInjection.inject(this)
     super.onActivityCreated(savedInstanceState)
     setUp(savedInstanceState ?: arguments)
-  }
-
-  override fun onStart() {
-    super.onStart()
-    viewModel.attach()
-    attach()
-  }
-
-  override fun onStop() {
-    viewModel.detach()
-    detach()
-    super.onStop()
+    lifecycle.addObserver(this)
+    lifecycle.addObserver(viewModel)
   }
 
   override fun show(manager: FragmentManager?, tag: String?) {
@@ -73,6 +66,14 @@ abstract class AbstractDialogFragment<VM>: DialogFragment() where VM: ViewModel 
     return -1
   }
 
+  override fun onDestroy() {
+    lifecycle.removeObserver(this)
+    lifecycle.removeObserver(viewModel)
+    super.onDestroy()
+  }
+
+  override fun getLifecycle(): Lifecycle = lifecycle
+
   open fun finish() = Unit
   open fun isAvailable(): Boolean = isAdded && activity != null
 
@@ -80,8 +81,8 @@ abstract class AbstractDialogFragment<VM>: DialogFragment() where VM: ViewModel 
   open fun context(): Context? = context
   open fun supportFragmentManager(): FragmentManager = childFragmentManager
 
-  abstract fun attach()
-  abstract fun detach()
+  @OnLifecycleEvent(Lifecycle.Event.ON_START) abstract fun attach()
+  @OnLifecycleEvent(Lifecycle.Event.ON_STOP) abstract fun detach()
   abstract fun setUp(state: Bundle?)
 
   open fun viewEvents(): Observable<Event> = viewEvents.hide()

@@ -15,6 +15,7 @@
  */
 package org.fs.architecture.mvi.core
 
+import android.arch.lifecycle.*
 import android.content.Context
 import android.os.Bundle
 import android.support.design.widget.BottomSheetDialogFragment
@@ -31,11 +32,13 @@ import org.fs.architecture.mvi.common.Event
 import org.fs.architecture.mvi.common.ViewModel
 import javax.inject.Inject
 
-abstract class AbstractBottomSheetDialogFragment<VM>: BottomSheetDialogFragment() where VM: ViewModel {
+abstract class AbstractBottomSheetDialogFragment<VM>: BottomSheetDialogFragment(), LifecycleObserver, LifecycleOwner where VM: ViewModel {
 
   protected val disposeBag by lazy { CompositeDisposable() }
   protected val viewEvents by lazy { PublishRelay.create<Event>() }
   protected abstract val layoutRes: Int
+
+  private val lifecycle by lazy { LifecycleRegistry(this) }
 
   @Inject lateinit var viewModel: VM
 
@@ -45,6 +48,8 @@ abstract class AbstractBottomSheetDialogFragment<VM>: BottomSheetDialogFragment(
     AndroidSupportInjection.inject(this)
     super.onActivityCreated(savedInstanceState)
     setUp(savedInstanceState ?: arguments)
+    lifecycle.addObserver(this)
+    lifecycle.addObserver(viewModel)
   }
 
   override fun show(manager: FragmentManager?, tag: String?) {
@@ -61,17 +66,13 @@ abstract class AbstractBottomSheetDialogFragment<VM>: BottomSheetDialogFragment(
     return -1
   }
 
-  override fun onStart() {
-    super.onStart()
-    viewModel.attach()
-    attach()
+  override fun onDestroy() {
+    lifecycle.removeObserver(this)
+    lifecycle.removeObserver(viewModel)
+    super.onDestroy()
   }
 
-  override fun onStop() {
-    viewModel.detach()
-    detach()
-    super.onStop()
-  }
+  override fun getLifecycle(): Lifecycle = lifecycle
 
   open fun finish() = Unit
   open fun isAvailable(): Boolean = isAdded && activity != null
@@ -80,8 +81,8 @@ abstract class AbstractBottomSheetDialogFragment<VM>: BottomSheetDialogFragment(
   open fun context(): Context? = context
   open fun supportFragmentManager(): FragmentManager = childFragmentManager
 
-  abstract fun attach()
-  abstract fun detach()
+  @OnLifecycleEvent(Lifecycle.Event.ON_START) abstract fun attach()
+  @OnLifecycleEvent(Lifecycle.Event.ON_STOP) abstract fun detach()
   abstract fun setUp(state: Bundle?)
 
   open fun viewEvents(): Observable<Event> = viewEvents.hide()
