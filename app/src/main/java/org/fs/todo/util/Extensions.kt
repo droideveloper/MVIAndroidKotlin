@@ -15,20 +15,13 @@
  */
 package org.fs.todo.util
 
-import android.arch.persistence.room.TypeConverter
-import org.fs.todo.model.EntryState
-import java.lang.IllegalStateException
+import android.util.Log
+import org.fs.todo.BuildConfig
 
-sealed class EntryStateConverter {
-  companion object {
-
-    @TypeConverter @JvmStatic fun enumToInt(state: EntryState): Int = state.ordinal
-
-    @TypeConverter @JvmStatic fun intToEnum(state: Int): EntryState = when(state) {
-      EntryState.ACTIVE.ordinal -> EntryState.ACTIVE
-      EntryState.CLOSED.ordinal -> EntryState.CLOSED
-      EntryState.DELETED.ordinal -> EntryState.DELETED
-      else -> throw IllegalStateException("state from database can not be converted into enum object $state")
-    }
+inline fun <reified T> T.logEnabled(): Boolean = BuildConfig.DEBUG
+inline fun <reified T> T.classTag(): String = T::class.java.simpleName
+inline fun <reified T> T.log(message: String)  {
+  if (logEnabled()) {
+    Log.println(Log.ERROR, classTag(), message)
   }
 }

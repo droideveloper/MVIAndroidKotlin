@@ -102,5 +102,4 @@ class EntryFragment: AbstractFragment<EntryFragmentViewModel>(), EntryFragmentVi
   }
 
   override fun detach() = disposeBag.clear()
-
 }
