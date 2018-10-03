@@ -2,30 +2,31 @@
 
 buildscript {
   ext {
-    KOTLIN_VERSION = '1.2.70'
+    KOTLIN_VERSION = '1.2.71'
     GRADLE_TOOLS_VERSION = "3.1.4"
-    SUPPORT_LIBRARIES_VERSION = "28.0.0-rc02"
+    SUPPORT_LIBRARIES_VERSION = "28.0.0"
     ANDROID_X_VERSION = "0.3"
     ANDROID_CONSTRAINT_VERSION = "1.1.3"
     RX_ANDROID_VERSION = "2.0.2"
     RX_KOTLIN_VERSION = "2.2.0"
     RX_RELAY_KOTLIN = "2.0.0"
-    OK_HTTP_VERSION = "3.10.0"
+    OK_HTTP_VERSION = "3.11.0"
+    OK_HTTP_OKIO_VERSION = "2.1.0"
     RETROFIT_VERSION = "2.4.0"
-    RETROFIT_ADAPTER_VERSION = "2.3.0"
+    RETROFIT_ADAPTER_VERSION = "2.4.0"
     RETROFIT_CONVERTER_VERSION = "2.4.0"
-    DAGGER_VERSION = "2.16"
+    DAGGER_VERSION = "2.17"
     ROOM_VERSION = "1.1.1"
-    UIBINDING_VERSION = "0.0.12"
+    UIBINDING_VERSION = "0.0.14"
     RX_PREFERENCE_VERSION = "0.0.4"
-    GLIDE_VERSION = "4.7.1"
+    GLIDE_VERSION = "4.8.0"
   }
   repositories {
     google()
     jcenter()
   }
   dependencies {
-    classpath "com.android.tools.build:gradle:$GRADLE_TOOLS_VERSION"
+    classpath "com.android.tools.build:gradle:3.2.0"
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$KOTLIN_VERSION"
 
     // NOTE: Do not place your application dependencies here; they belong
