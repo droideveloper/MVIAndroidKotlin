@@ -29,11 +29,19 @@ import java.io.File
 
 fun <T> Observable<T>.toViewEvent(block:(T) -> Event): Observable<Event> = map(block)
 fun Observable<Event>.toIntent(block: (Event) -> Intent): Observable<Intent> = map(block)
-fun <T> Observable<Intent>.toReducer(): Observable<Reducer<T>> = concatMap { source ->
-  return@concatMap when(source) {
-    is ReducerIntent<*> -> Observable.just(source as ReducerIntent<T>)
-    is ObservableIntent<*> -> (source as ObservableIntent<T>)()
-  }
+inline fun <reified T> Observable<Intent>.toReducer(): Observable<Reducer<T>> = concatMap { source ->
+   if (source is ReducerIntent<*>) {
+     val intent = source as? ReducerIntent<T>
+     if (intent != null) {
+       return@concatMap Observable.just(intent)
+     }
+   } else if (source is ObservableIntent<*>) {
+     val intent = source as? ObservableIntent<T>
+     if (intent != null) {
+       return@concatMap intent()
+     }
+   }
+   return@concatMap Observable.empty<Reducer<T>>()
 }
 
 operator fun CompositeDisposable.plusAssign(d: Disposable) { add(d) }
