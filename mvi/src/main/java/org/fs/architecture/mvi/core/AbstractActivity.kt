@@ -35,7 +35,7 @@ abstract class AbstractActivity<VM>: AppCompatActivity(), LifecycleOwner, Lifecy
 
   private val lifecycle by lazy { LifecycleRegistry(this) }
 
-  protected abstract val layoutRes: Int
+  abstract val layoutRes: Int
 
   @Inject lateinit var viewModel: VM
 

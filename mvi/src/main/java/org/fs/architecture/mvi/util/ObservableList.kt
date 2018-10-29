@@ -46,7 +46,7 @@ open class ObservableList<T>: ArrayList<T>() {
         }
       }
     }
-    return success;
+    return success
   }
 
   override fun add(index: Int, element: T) {

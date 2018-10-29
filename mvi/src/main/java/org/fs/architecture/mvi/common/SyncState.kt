@@ -17,11 +17,11 @@ package org.fs.architecture.mvi.common
 
 sealed class SyncState
 
-object IDLE: SyncState() {
+object Idle: SyncState() {
   override fun toString(): String = "idle"
 }
-data class PROCESS(val type: ProcessType): SyncState()
-data class ERROR(val error: Throwable): SyncState()
+data class Process(val type: ProcessType): SyncState()
+data class Error(val error: Throwable): SyncState()
 
 enum class ProcessType {
   REFRESH,

@@ -27,14 +27,8 @@ class BusManager private constructor() {
 
     @JvmStatic fun <T: Event> send(event: T) = imp.post(event)
     @JvmStatic fun add(observer: Consumer<Event>): Disposable = imp.register(observer)
-    @JvmStatic fun remove(disposable: Disposable) = imp.unregister(disposable)
   }
 
   private fun <T: Event> post(event: T) = rxBus.onNext(event)
   private fun register(observer: Consumer<Event>): Disposable = rxBus.subscribe(observer)
-  private fun unregister(disposable: Disposable) {
-    if (!disposable.isDisposed) {
-      disposable.dispose()
-    }
-  }
 }
