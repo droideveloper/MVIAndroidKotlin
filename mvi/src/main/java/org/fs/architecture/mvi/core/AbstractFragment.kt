@@ -35,7 +35,7 @@ abstract class AbstractFragment<VM>: Fragment(), LifecycleOwner, LifecycleObserv
 
   protected val disposeBag by lazy { CompositeDisposable() }
   protected val viewEvents by lazy { PublishRelay.create<Event>() }
-  protected abstract val layoutRes: Int
+  abstract val layoutRes: Int
 
   private val lifecycle by lazy { LifecycleRegistry(this) }
 
