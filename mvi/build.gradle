@@ -9,7 +9,7 @@ android {
     minSdkVersion 16
     targetSdkVersion 28
     versionCode 1
-    versionName "0.0.12"
+    versionName "0.0.13"
   }
 
   lintOptions {
@@ -40,12 +40,13 @@ androidExtensions {
 }
 
 dependencies {
-  implementation "com.android.support:appcompat-v7:$SUPPORT_LIBRARIES_VERSION"
-  implementation "com.android.support:support-fragment:$SUPPORT_LIBRARIES_VERSION"
-  implementation "com.android.support:support-compat:$SUPPORT_LIBRARIES_VERSION"
-  implementation "com.android.support:recyclerview-v7:$SUPPORT_LIBRARIES_VERSION"
-  implementation "com.android.support:design:$SUPPORT_LIBRARIES_VERSION"
-  implementation "com.android.support.constraint:constraint-layout:$ANDROID_CONSTRAINT_VERSION"
+  //implementation "com.android.support:appcompat-v7:$SUPPORT_LIBRARIES_VERSION"
+  //implementation "com.android.support:support-fragment:$SUPPORT_LIBRARIES_VERSION"
+  //implementation "com.android.support:support-compat:$SUPPORT_LIBRARIES_VERSION"
+  //implementation "com.android.support:recyclerview-v7:$SUPPORT_LIBRARIES_VERSION"
+  //implementation "com.android.support:design:$SUPPORT_LIBRARIES_VERSION"
+  //implementation "com.android.support.constraint:constraint-layout:$ANDROID_CONSTRAINT_VERSION"
+  implementation "com.google.android.material:material:$MATERIAL_VERSION"
 
   implementation "androidx.core:core-ktx:$ANDROID_X_VERSION"
 
@@ -84,7 +85,7 @@ dependencies {
 ext {
   PUBLISH_GROUP_ID = 'org.fs.architecture'
   PUBLISH_ARTIFACT_ID = 'mvi'
-  PUBLISH_VERSION = '0.0.12'
+  PUBLISH_VERSION = '0.0.13'
 }
 
 apply from: 'https://raw.githubusercontent.com/blundell/release-android-library/master/android-release-aar.gradle'
