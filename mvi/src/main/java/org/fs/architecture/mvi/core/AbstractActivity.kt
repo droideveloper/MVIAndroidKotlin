@@ -45,12 +45,10 @@ abstract class AbstractActivity<VM>: AppCompatActivity(), LifecycleOwner, Lifecy
     setContentView(layoutRes)
     setUp(savedInstanceState ?: intent.extras)
     lifecycle.addObserver(this)
-    lifecycle.addObserver(viewModel)
   }
 
   override fun onDestroy() {
     lifecycle.removeObserver(this)
-    lifecycle.removeObserver(viewModel)
     super.onDestroy()
   }
 
@@ -66,6 +64,12 @@ abstract class AbstractActivity<VM>: AppCompatActivity(), LifecycleOwner, Lifecy
   open fun viewEvents(): Observable<Event> = viewEvents.hide()
 
   abstract fun setUp(state: Bundle?)
-  @OnLifecycleEvent(Lifecycle.Event.ON_START) abstract fun attach()
-  @OnLifecycleEvent(Lifecycle.Event.ON_STOP) abstract fun detach()
+
+  @OnLifecycleEvent(Lifecycle.Event.ON_START) open fun attach() {
+    viewModel.attach()
+  }
+
+  @OnLifecycleEvent(Lifecycle.Event.ON_STOP) open fun detach() {
+    viewModel.detach()
+  }
 }

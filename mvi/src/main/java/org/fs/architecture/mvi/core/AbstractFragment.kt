@@ -48,14 +48,12 @@ abstract class AbstractFragment<VM>: Fragment(), LifecycleOwner, LifecycleObserv
     super.onActivityCreated(savedInstanceState)
     setUp(savedInstanceState ?: arguments)
     lifecycle.addObserver(this)
-    lifecycle.addObserver(viewModel)
   }
 
   override fun getLifecycle(): Lifecycle = lifecycle
 
   override fun onDestroy() {
     lifecycle.removeObserver(this)
-    lifecycle.removeObserver(viewModel)
     super.onDestroy()
   }
 
@@ -67,8 +65,14 @@ abstract class AbstractFragment<VM>: Fragment(), LifecycleOwner, LifecycleObserv
   open fun context(): Context? = context
   open fun supportFragmentManager(): FragmentManager = childFragmentManager
 
-  @OnLifecycleEvent(Lifecycle.Event.ON_START) abstract fun attach()
-  @OnLifecycleEvent(Lifecycle.Event.ON_STOP) abstract fun detach()
+  @OnLifecycleEvent(Lifecycle.Event.ON_START) open fun attach() {
+    viewModel.attach()
+  }
+
+  @OnLifecycleEvent(Lifecycle.Event.ON_STOP) open fun detach() {
+    viewModel.detach()
+  }
+
   abstract fun setUp(state: Bundle?)
 
   open fun viewEvents(): Observable<Event> = viewEvents.hide()
