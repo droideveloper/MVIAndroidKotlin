@@ -34,13 +34,11 @@ import org.fs.architecture.mvi.common.Event
 import org.fs.architecture.mvi.common.ViewModel
 import javax.inject.Inject
 
-abstract class AbstractFragment<VM>: Fragment(), LifecycleOwner, LifecycleObserver, HasSupportFragmentInjector where VM: ViewModel {
+abstract class AbstractFragment<VM>: Fragment(), HasSupportFragmentInjector where VM: ViewModel {
 
   protected val disposeBag by lazy { CompositeDisposable() }
   protected val viewEvents by lazy { PublishRelay.create<Event>() }
   abstract val layoutRes: Int
-
-  private val lifecycle by lazy { LifecycleRegistry(this) }
 
   @Inject lateinit var viewModel: VM
   @Inject lateinit var supportFragmentInjector: DispatchingAndroidInjector<Fragment>
@@ -52,14 +50,16 @@ abstract class AbstractFragment<VM>: Fragment(), LifecycleOwner, LifecycleObserv
     AndroidSupportInjection.inject(this)
     super.onActivityCreated(savedInstanceState)
     setUp(savedInstanceState ?: arguments)
-    lifecycle.addObserver(this)
   }
 
-  override fun getLifecycle(): Lifecycle = lifecycle
+  override fun onStart() {
+    super.onStart()
+    attach()
+  }
 
-  override fun onDestroy() {
-    lifecycle.removeObserver(this)
-    super.onDestroy()
+  override fun onStop() {
+    detach()
+    super.onStop()
   }
 
   open fun finish() = Unit
@@ -70,11 +70,11 @@ abstract class AbstractFragment<VM>: Fragment(), LifecycleOwner, LifecycleObserv
   open fun context(): Context? = context
   open fun supportFragmentManager(): FragmentManager = childFragmentManager
 
-  @OnLifecycleEvent(Lifecycle.Event.ON_START) open fun attach() {
+  open fun attach() {
     viewModel.attach()
   }
 
-  @OnLifecycleEvent(Lifecycle.Event.ON_STOP) open fun detach() {
+  open fun detach() {
     viewModel.detach()
   }
 

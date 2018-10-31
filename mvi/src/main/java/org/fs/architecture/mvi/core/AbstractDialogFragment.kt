@@ -36,13 +36,11 @@ import org.fs.architecture.mvi.common.Event
 import org.fs.architecture.mvi.common.ViewModel
 import javax.inject.Inject
 
-abstract class AbstractDialogFragment<VM>: DialogFragment(), LifecycleOwner, LifecycleObserver, HasSupportFragmentInjector where VM: ViewModel {
+abstract class AbstractDialogFragment<VM>: DialogFragment(), HasSupportFragmentInjector where VM: ViewModel {
 
   protected val disposeBag by lazy { CompositeDisposable() }
   protected val viewEvents by lazy { PublishRelay.create<Event>() }
   abstract val layoutRes: Int
-
-  private val lifecycle by lazy { LifecycleRegistry(this) }
 
   @Inject lateinit var viewModel: VM
   @Inject lateinit var supportFragmentInjector: DispatchingAndroidInjector<Fragment>
@@ -50,11 +48,20 @@ abstract class AbstractDialogFragment<VM>: DialogFragment(), LifecycleOwner, Lif
 
   override fun onCreateView(factory: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = factory.inflate(layoutRes, container, false)
 
-  override fun onActivityCreated(savedInstanceState: Bundle?) {
+  override fun onCreate(savedInstanceState: Bundle?) {
     AndroidSupportInjection.inject(this)
-    super.onActivityCreated(savedInstanceState)
+    super.onCreate(savedInstanceState)
     setUp(savedInstanceState ?: arguments)
-    lifecycle.addObserver(this)
+  }
+
+  override fun onStart() {
+    super.onStart()
+    attach()
+  }
+
+  override fun onStop() {
+    detach()
+    super.onStop()
   }
 
   override fun show(manager: FragmentManager?, tag: String?) {
@@ -71,13 +78,6 @@ abstract class AbstractDialogFragment<VM>: DialogFragment(), LifecycleOwner, Lif
     return -1
   }
 
-  override fun onDestroy() {
-    lifecycle.removeObserver(this)
-    super.onDestroy()
-  }
-
-  override fun getLifecycle(): Lifecycle = lifecycle
-
   open fun finish() = Unit
   open fun isAvailable(): Boolean = isAdded && activity != null
 
@@ -85,11 +85,11 @@ abstract class AbstractDialogFragment<VM>: DialogFragment(), LifecycleOwner, Lif
   open fun context(): Context? = context
   open fun supportFragmentManager(): FragmentManager = childFragmentManager
 
-  @OnLifecycleEvent(Lifecycle.Event.ON_START) open fun attach() {
+  open fun attach() {
     viewModel.attach()
   }
 
-  @OnLifecycleEvent(Lifecycle.Event.ON_STOP) open fun detach() {
+  open fun detach() {
     viewModel.detach()
   }
 

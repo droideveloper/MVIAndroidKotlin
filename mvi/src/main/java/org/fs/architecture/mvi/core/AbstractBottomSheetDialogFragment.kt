@@ -36,13 +36,11 @@ import org.fs.architecture.mvi.common.Event
 import org.fs.architecture.mvi.common.ViewModel
 import javax.inject.Inject
 
-abstract class AbstractBottomSheetDialogFragment<VM>: BottomSheetDialogFragment(), LifecycleObserver, LifecycleOwner, HasSupportFragmentInjector where VM: ViewModel {
+abstract class AbstractBottomSheetDialogFragment<VM>: BottomSheetDialogFragment(), HasSupportFragmentInjector where VM: ViewModel {
 
   protected val disposeBag by lazy { CompositeDisposable() }
   protected val viewEvents by lazy { PublishRelay.create<Event>() }
   abstract val layoutRes: Int
-
-  private val lifecycle by lazy { LifecycleRegistry(this) }
 
   @Inject lateinit var viewModel: VM
   @Inject lateinit var supportFragmentInjector: DispatchingAndroidInjector<Fragment>
@@ -54,13 +52,22 @@ abstract class AbstractBottomSheetDialogFragment<VM>: BottomSheetDialogFragment(
     AndroidSupportInjection.inject(this)
     super.onActivityCreated(savedInstanceState)
     setUp(savedInstanceState ?: arguments)
-    lifecycle.addObserver(this)
   }
 
   override fun show(manager: FragmentManager?, tag: String?) {
     if (manager != null) {
       show(manager.beginTransaction(), tag)
     }
+  }
+
+  override fun onStart() {
+    super.onStart()
+    attach()
+  }
+
+  override fun onStop() {
+    detach()
+    super.onStop()
   }
 
   override fun show(transaction: FragmentTransaction?, tag: String?): Int {
@@ -71,13 +78,6 @@ abstract class AbstractBottomSheetDialogFragment<VM>: BottomSheetDialogFragment(
     return -1
   }
 
-  override fun onDestroy() {
-    lifecycle.removeObserver(this)
-    super.onDestroy()
-  }
-
-  override fun getLifecycle(): Lifecycle = lifecycle
-
   open fun finish() = Unit
   open fun isAvailable(): Boolean = isAdded && activity != null
 
@@ -85,11 +85,11 @@ abstract class AbstractBottomSheetDialogFragment<VM>: BottomSheetDialogFragment(
   open fun context(): Context? = context
   open fun supportFragmentManager(): FragmentManager = childFragmentManager
 
-  @OnLifecycleEvent(Lifecycle.Event.ON_START) open fun attach() {
+  open fun attach() {
     viewModel.attach()
   }
 
-  @OnLifecycleEvent(Lifecycle.Event.ON_STOP) open fun detach() {
+  open fun detach() {
     viewModel.detach()
   }
 
