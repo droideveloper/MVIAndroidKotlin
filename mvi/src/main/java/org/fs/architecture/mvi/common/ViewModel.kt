@@ -15,13 +15,8 @@
  */
 package org.fs.architecture.mvi.common
 
-import android.arch.lifecycle.Lifecycle
-import android.arch.lifecycle.LifecycleObserver
-import android.arch.lifecycle.OnLifecycleEvent
-
-
-interface ViewModel: LifecycleObserver {
-  @OnLifecycleEvent(Lifecycle.Event.ON_START) fun attach()
-  @OnLifecycleEvent(Lifecycle.Event.ON_STOP)fun detach()
+interface ViewModel {
+  fun attach()
+  fun detach()
   fun accept(intent: Intent)
 }
