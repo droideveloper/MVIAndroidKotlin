@@ -18,26 +18,32 @@ package org.fs.architecture.mvi.core
 import android.arch.lifecycle.*
 import android.content.Context
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v7.app.AppCompatActivity
 import com.jakewharton.rxrelay2.PublishRelay
 import dagger.android.AndroidInjection
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.support.HasSupportFragmentInjector
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import org.fs.architecture.mvi.common.Event
 import org.fs.architecture.mvi.common.ViewModel
 import javax.inject.Inject
 
-abstract class AbstractActivity<VM>: AppCompatActivity(), LifecycleOwner, LifecycleObserver where VM: ViewModel {
+abstract class AbstractActivity<VM>: AppCompatActivity(), LifecycleOwner, LifecycleObserver, HasSupportFragmentInjector where VM: ViewModel {
 
   protected val disposeBag by lazy { CompositeDisposable() }
   protected val viewEvents by lazy { PublishRelay.create<Event>() }
 
   private val lifecycle by lazy { LifecycleRegistry(this) }
 
+
   abstract val layoutRes: Int
 
   @Inject lateinit var viewModel: VM
+  @Inject lateinit var supportFragmentInjector: DispatchingAndroidInjector<Fragment>
 
   override fun onCreate(savedInstanceState: Bundle?) {
     AndroidInjection.inject(this)
@@ -72,4 +78,6 @@ abstract class AbstractActivity<VM>: AppCompatActivity(), LifecycleOwner, Lifecy
   @OnLifecycleEvent(Lifecycle.Event.ON_STOP) open fun detach() {
     viewModel.detach()
   }
+
+  override fun supportFragmentInjector(): AndroidInjector<Fragment> = supportFragmentInjector
 }
