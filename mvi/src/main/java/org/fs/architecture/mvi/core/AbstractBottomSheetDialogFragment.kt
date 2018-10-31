@@ -19,20 +19,24 @@ import android.arch.lifecycle.*
 import android.content.Context
 import android.os.Bundle
 import android.support.design.widget.BottomSheetDialogFragment
+import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.jakewharton.rxrelay2.PublishRelay
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.AndroidSupportInjection
+import dagger.android.support.HasSupportFragmentInjector
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import org.fs.architecture.mvi.common.Event
 import org.fs.architecture.mvi.common.ViewModel
 import javax.inject.Inject
 
-abstract class AbstractBottomSheetDialogFragment<VM>: BottomSheetDialogFragment(), LifecycleObserver, LifecycleOwner where VM: ViewModel {
+abstract class AbstractBottomSheetDialogFragment<VM>: BottomSheetDialogFragment(), LifecycleObserver, LifecycleOwner, HasSupportFragmentInjector where VM: ViewModel {
 
   protected val disposeBag by lazy { CompositeDisposable() }
   protected val viewEvents by lazy { PublishRelay.create<Event>() }
@@ -41,6 +45,8 @@ abstract class AbstractBottomSheetDialogFragment<VM>: BottomSheetDialogFragment(
   private val lifecycle by lazy { LifecycleRegistry(this) }
 
   @Inject lateinit var viewModel: VM
+  @Inject lateinit var supportFragmentInjector: DispatchingAndroidInjector<Fragment>
+
 
   override fun onCreateView(factory: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = factory.inflate(layoutRes, container, false)
 
@@ -90,4 +96,5 @@ abstract class AbstractBottomSheetDialogFragment<VM>: BottomSheetDialogFragment(
   abstract fun setUp(state: Bundle?)
 
   open fun viewEvents(): Observable<Event> = viewEvents.hide()
+  override fun supportFragmentInjector(): AndroidInjector<Fragment> = supportFragmentInjector
 }
