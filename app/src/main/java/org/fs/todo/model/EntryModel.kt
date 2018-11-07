@@ -15,8 +15,9 @@
  */
 package org.fs.todo.model
 
-import org.fs.architecture.mvi.common.IDLE
 import org.fs.architecture.mvi.common.Model
 import org.fs.architecture.mvi.common.SyncState
 
-data class EntryModel(val data: List<Entry>, val state: SyncState = IDLE) : Model
+data class EntryModel(
+    override val state: SyncState,
+    override val data: List<Entry>) : Model<List<Entry>>(state, data)

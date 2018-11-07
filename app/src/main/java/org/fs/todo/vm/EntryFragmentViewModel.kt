@@ -15,12 +15,24 @@
  */
 package org.fs.todo.vm
 
-import io.reactivex.Observable
-import org.fs.architecture.mvi.common.SyncState
-import org.fs.architecture.mvi.common.ViewModel
+import org.fs.architecture.mvi.common.Event
+import org.fs.architecture.mvi.common.ForFragment
+import org.fs.architecture.mvi.common.Idle
+import org.fs.architecture.mvi.common.Intent
+import org.fs.architecture.mvi.core.AbstractViewModel
+import org.fs.todo.model.Entry
 import org.fs.todo.model.EntryModel
+import org.fs.todo.repo.EntryRepository
+import org.fs.todo.view.EntryFragmentView
+import javax.inject.Inject
 
-interface EntryFragmentViewModel : ViewModel {
-  fun state(): Observable<SyncState>
-  fun model(): Observable<EntryModel>
+@ForFragment
+class EntryFragmentViewModel @Inject constructor(view: EntryFragmentView,
+    private val entryRepository: EntryRepository) : AbstractViewModel<EntryModel, List<Entry>, EntryFragmentView>(view) {
+
+  override fun initState(): EntryModel = EntryModel(state = Idle, data = emptyList())
+
+  override fun toIntent(event: Event): Intent {
+    throw NotImplementedError("we can not recognize $event")
+  }
 }
