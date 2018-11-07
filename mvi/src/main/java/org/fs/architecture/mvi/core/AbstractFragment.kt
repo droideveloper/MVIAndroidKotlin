@@ -70,9 +70,7 @@ abstract class AbstractFragment<T, D, VM>: Fragment(), HasSupportFragmentInjecto
   open fun context(): Context? = context
   open fun supportFragmentManager(): FragmentManager = childFragmentManager
 
-  open fun render(model: Model<D>) {
-    // TODO render here
-  }
+  abstract fun render(model: Model<D>)
 
   open fun attach() {
     viewModel.attach()
@@ -82,6 +80,7 @@ abstract class AbstractFragment<T, D, VM>: Fragment(), HasSupportFragmentInjecto
   }
 
   open fun detach() {
+    disposeBag.clear()
     viewModel.detach()
   }
 

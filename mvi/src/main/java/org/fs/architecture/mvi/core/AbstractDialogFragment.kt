@@ -85,9 +85,7 @@ abstract class AbstractDialogFragment<T, D, VM>: DialogFragment(), HasSupportFra
   open fun context(): Context? = context
   open fun supportFragmentManager(): FragmentManager = childFragmentManager
 
-  open fun render(model: Model<D>) {
-    // TODO render done in here
-  }
+  abstract fun render(model: Model<D>)
 
   open fun attach() {
     viewModel.attach()
@@ -97,6 +95,7 @@ abstract class AbstractDialogFragment<T, D, VM>: DialogFragment(), HasSupportFra
   }
 
   open fun detach() {
+    disposeBag.clear()
     viewModel.detach()
   }
 
