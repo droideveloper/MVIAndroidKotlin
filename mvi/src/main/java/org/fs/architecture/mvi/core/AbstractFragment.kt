@@ -15,7 +15,6 @@
  */
 package org.fs.architecture.mvi.core
 
-import android.arch.lifecycle.*
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -31,18 +30,19 @@ import dagger.android.support.HasSupportFragmentInjector
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import org.fs.architecture.mvi.common.Event
+import org.fs.architecture.mvi.common.Model
 import org.fs.architecture.mvi.common.ViewModel
+import org.fs.architecture.mvi.util.plusAssign
 import javax.inject.Inject
 
-abstract class AbstractFragment<VM>: Fragment(), HasSupportFragmentInjector where VM: ViewModel {
+abstract class AbstractFragment<T, D, VM>: Fragment(), HasSupportFragmentInjector where VM: ViewModel<T>, T: Model<D> {
 
   protected val disposeBag by lazy { CompositeDisposable() }
-  protected val viewEvents by lazy { PublishRelay.create<Event>() }
+  private val viewEvents by lazy { PublishRelay.create<Event>() }
   abstract val layoutRes: Int
 
   @Inject lateinit var viewModel: VM
   @Inject lateinit var supportFragmentInjector: DispatchingAndroidInjector<Fragment>
-
 
   override fun onCreateView(factory: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = factory.inflate(layoutRes, container, false)
 
@@ -70,8 +70,15 @@ abstract class AbstractFragment<VM>: Fragment(), HasSupportFragmentInjector wher
   open fun context(): Context? = context
   open fun supportFragmentManager(): FragmentManager = childFragmentManager
 
+  open fun render(model: Model<D>) {
+    // TODO render here
+  }
+
   open fun attach() {
     viewModel.attach()
+
+    disposeBag += viewModel.storage()
+      .subscribe(this::render)
   }
 
   open fun detach() {

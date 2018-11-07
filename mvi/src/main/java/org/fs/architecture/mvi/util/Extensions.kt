@@ -29,7 +29,7 @@ import java.io.File
 
 fun <T> Observable<T>.toViewEvent(block:(T) -> Event): Observable<Event> = map(block)
 fun Observable<Event>.toIntent(block: (Event) -> Intent): Observable<Intent> = map(block)
-inline fun <reified T> Observable<Intent>.toReducer(): Observable<Reducer<T>> = concatMap { source ->
+inline fun <T> Observable<Intent>.toReducer(): Observable<Reducer<T>> = concatMap { source ->
    if (source is ReducerIntent<*>) {
      val intent = source as? ReducerIntent<T>
      if (intent != null) {

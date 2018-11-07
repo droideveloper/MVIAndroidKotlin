@@ -15,8 +15,12 @@
  */
 package org.fs.architecture.mvi.common
 
-interface ViewModel {
+import io.reactivex.Observable
+
+interface ViewModel<T> {
   fun attach()
   fun detach()
+  fun state(): Observable<SyncState>
+  fun storage(): Observable<T>
   fun accept(intent: Intent)
 }

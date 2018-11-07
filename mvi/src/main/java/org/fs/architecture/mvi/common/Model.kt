@@ -15,4 +15,4 @@
  */
 package org.fs.architecture.mvi.common
 
-interface Model
+open class Model<T>(open val state: SyncState, open val data: T)
