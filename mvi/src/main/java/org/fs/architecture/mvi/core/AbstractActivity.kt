@@ -70,9 +70,7 @@ abstract class AbstractActivity<T, D, VM>: AppCompatActivity(), LifecycleOwner, 
 
   open fun viewEvents(): Observable<Event> = viewEvents.hide()
 
-  open fun render(model: Model<D>) {
-    // TODO implement in here
-  }
+  abstract fun render(model: Model<D>)
 
   abstract fun setUp(state: Bundle?)
 
@@ -84,6 +82,7 @@ abstract class AbstractActivity<T, D, VM>: AppCompatActivity(), LifecycleOwner, 
   }
 
   @OnLifecycleEvent(Lifecycle.Event.ON_STOP) open fun detach() {
+    disposeBag.clear()
     viewModel.detach()
   }
 

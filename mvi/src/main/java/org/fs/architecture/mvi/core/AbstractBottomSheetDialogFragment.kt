@@ -85,9 +85,7 @@ abstract class AbstractBottomSheetDialogFragment<T, D, VM>: BottomSheetDialogFra
   open fun context(): Context? = context
   open fun supportFragmentManager(): FragmentManager = childFragmentManager
 
-  open fun render(model: Model<D>) {
-    // TODO do render here
-  }
+  abstract fun render(model: Model<D>)
 
   open fun attach() {
     viewModel.attach()
@@ -97,6 +95,7 @@ abstract class AbstractBottomSheetDialogFragment<T, D, VM>: BottomSheetDialogFra
   }
 
   open fun detach() {
+    disposeBag.clear()
     viewModel.detach()
   }
 
