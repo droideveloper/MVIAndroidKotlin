@@ -29,16 +29,17 @@ import dagger.android.support.HasSupportFragmentInjector
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import org.fs.architecture.mvi.common.Event
+import org.fs.architecture.mvi.common.Model
 import org.fs.architecture.mvi.common.ViewModel
+import org.fs.architecture.mvi.util.plusAssign
 import javax.inject.Inject
 
-abstract class AbstractActivity<VM>: AppCompatActivity(), LifecycleOwner, LifecycleObserver, HasSupportFragmentInjector where VM: ViewModel {
+abstract class AbstractActivity<T, D, VM>: AppCompatActivity(), LifecycleOwner, LifecycleObserver, HasSupportFragmentInjector where VM: ViewModel<T>, T: Model<D> {
 
   protected val disposeBag by lazy { CompositeDisposable() }
-  protected val viewEvents by lazy { PublishRelay.create<Event>() }
+  private val viewEvents by lazy { PublishRelay.create<Event>() }
 
   private val lifecycle by lazy { LifecycleRegistry(this) }
-
 
   abstract val layoutRes: Int
 
@@ -69,10 +70,17 @@ abstract class AbstractActivity<VM>: AppCompatActivity(), LifecycleOwner, Lifecy
 
   open fun viewEvents(): Observable<Event> = viewEvents.hide()
 
+  open fun render(model: Model<D>) {
+    // TODO implement in here
+  }
+
   abstract fun setUp(state: Bundle?)
 
   @OnLifecycleEvent(Lifecycle.Event.ON_START) open fun attach() {
     viewModel.attach()
+
+    disposeBag += viewModel.storage()
+      .subscribe(this::render)
   }
 
   @OnLifecycleEvent(Lifecycle.Event.ON_STOP) open fun detach() {

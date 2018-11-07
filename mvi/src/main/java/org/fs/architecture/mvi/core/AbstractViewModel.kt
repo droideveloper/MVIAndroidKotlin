@@ -16,15 +16,42 @@
 package org.fs.architecture.mvi.core
 
 import com.jakewharton.rxrelay2.PublishRelay
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import org.fs.architecture.mvi.common.Intent
-import org.fs.architecture.mvi.common.View
-import org.fs.architecture.mvi.common.ViewModel
+import org.fs.architecture.mvi.common.*
+import org.fs.architecture.mvi.util.plusAssign
+import org.fs.architecture.mvi.util.toIntent
+import org.fs.architecture.mvi.util.toReducer
 
-abstract class AbstractViewModel<V>(protected val view: V): ViewModel where V: View {
+abstract class AbstractViewModel<T, D, V>(protected val view: V): ViewModel<T> where V: View<D>, T: Model<D> {
 
   protected val disposeBag by lazy { CompositeDisposable() }
-  protected val intents by lazy { PublishRelay.create<Intent>() }
+
+  private val intents by lazy { PublishRelay.create<Intent>() }
+
+  private val storage by lazy {
+    intents.hide()
+        .toReducer<T>()
+        .observeOn(AndroidSchedulers.mainThread())
+        .scan(initState()) { o, reducer -> reducer.invoke(o) }
+        .replay(1)
+  }
+
+  protected abstract fun initState(): T
+  protected abstract fun toIntent(event: Event): Intent
+
+  override fun attach() {
+    disposeBag += storage.connect()
+
+    disposeBag += view.viewEvents()
+      .toIntent(this::toIntent)
+      .subscribe(this::accept)
+  }
+
+  override fun storage(): Observable<T> = storage.hide()
+
+  override fun state(): Observable<SyncState> = storage().map { item -> item.state }
 
   override fun accept(intent: Intent) = intents.accept(intent)
 }
