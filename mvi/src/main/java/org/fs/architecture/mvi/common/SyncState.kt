@@ -20,13 +20,6 @@ sealed class SyncState
 object Idle: SyncState() {
   override fun toString(): String = "idle"
 }
-data class Process(val type: ProcessType): SyncState()
-data class Error(val error: Throwable): SyncState()
 
-enum class ProcessType {
-  REFRESH,
-  LOAD_MORE,
-  CREATE,
-  UPDATE,
-  DELETE
-}
+data class Operation(val type: Int): SyncState() // with this we can extend it through
+data class Failure(val error: Throwable): SyncState()
