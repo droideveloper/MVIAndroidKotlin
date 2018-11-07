@@ -17,6 +17,5 @@ package org.fs.todo.model.event;
 
 import org.fs.architecture.mvi.common.Event
 import org.fs.todo.model.Entry
-import java.security.KeyStore
 
 data class LoadMoreEvent(val entry: Entry) : Event

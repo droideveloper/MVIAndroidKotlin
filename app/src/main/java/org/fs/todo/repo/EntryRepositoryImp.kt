@@ -17,6 +17,8 @@ package org.fs.todo.repo
 
 import io.reactivex.Completable
 import io.reactivex.Flowable
+import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import org.fs.todo.model.Entry
@@ -29,11 +31,9 @@ import javax.inject.Singleton
 @Singleton
 class EntryRepositoryImp @Inject constructor(private val dao: EntryDao): EntryRepository {
 
-  override fun all(createdAt: Long, take: Int): Flowable<List<Entry>> = dao.queryByNotState(EntryState.DELETED.ordinal, createdAt, take).doRetry()
+  override fun all(): Observable<List<Entry>> = dao.load().doRetry().toObservable()
 
-  override fun active(createdAt: Long, take: Int): Flowable<List<Entry>> = dao.queryByState(EntryState.ACTIVE.ordinal, createdAt, take).doRetry()
-
-  override fun closed(createdAt: Long, take: Int): Flowable<List<Entry>> = dao.queryByState(EntryState.CLOSED.ordinal, createdAt, take).doRetry()
+  override fun loadByState(state: EntryState): Observable<List<Entry>> = dao.loadByState(state.ordinal).doRetry().toObservable()
 
   override fun create(entry: Entry): Completable = Completable.fromAction { dao.create(entry) }.doRetry()
 
@@ -46,7 +46,7 @@ class EntryRepositoryImp @Inject constructor(private val dao: EntryDao): EntryRe
       .flatMap { source -> Flowable.timer(source, TimeUnit.SECONDS, Schedulers.io()) }
   }
 
-  private fun <T> Flowable<T>.doRetry(): Flowable<T> = retryWhen { errors ->
+  private fun <T> Single<T>.doRetry(): Single<T> = retryWhen { errors ->
     errors.zipWith(Flowable.range(1, 3), BiFunction<Throwable, Int, Long> { _, i -> i.toLong() })
       .flatMap { source -> Flowable.timer(source, TimeUnit.SECONDS, Schedulers.io()) }
   }

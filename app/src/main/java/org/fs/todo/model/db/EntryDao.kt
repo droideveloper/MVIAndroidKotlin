@@ -16,23 +16,19 @@
 package org.fs.todo.model.db
 
 import android.arch.persistence.room.*
-import io.reactivex.Flowable
+import io.reactivex.Single
 import org.fs.todo.model.Entry
 
 @Dao
 interface EntryDao {
 
-  @Query("SELECT * FROM entries " +
-      "WHERE state == :state AND createdAt <= :createdAt " +
-      "ORDER BY createdAt DESC " +
-      "LIMIT :take")
-  fun queryByState(state: Int, createdAt: Long, take: Int): Flowable<List<Entry>>
+  @Query("SELECT * FROM entries")
+  fun load(): Single<List<Entry>>
 
   @Query("SELECT * FROM entries " +
-      "WHERE state != :state AND createdAt <= :createdAt " +
-      "ORDER BY createdAt DESC " +
-      "LIMIT :take")
-  fun queryByNotState(state: Int, createdAt: Long, take: Int): Flowable<List<Entry>>
+      "WHERE state == :state")
+  fun loadByState(state: Int): Single<List<Entry>>
+
 
   @Insert(onConflict = OnConflictStrategy.REPLACE) fun create(entry: Entry)
   @Update fun update(entry: Entry)
