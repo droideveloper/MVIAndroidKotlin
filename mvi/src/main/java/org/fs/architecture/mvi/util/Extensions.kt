@@ -27,9 +27,8 @@ import io.reactivex.disposables.Disposable
 import org.fs.architecture.mvi.common.*
 import java.io.File
 
-fun <T> Observable<T>.toViewEvent(block:(T) -> Event): Observable<Event> = map(block)
 fun Observable<Event>.toIntent(block: (Event) -> Intent): Observable<Intent> = map(block)
-inline fun <T> Observable<Intent>.toReducer(): Observable<Reducer<T>> = concatMap { source ->
+fun <T> Observable<Intent>.toReducer(): Observable<Reducer<T>> = concatMap { source ->
    if (source is ReducerIntent<*>) {
      val intent = source as? ReducerIntent<T>
      if (intent != null) {
