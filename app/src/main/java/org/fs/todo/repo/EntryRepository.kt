@@ -17,13 +17,13 @@ package org.fs.todo.repo
 
 import io.reactivex.Completable
 import io.reactivex.Flowable
+import io.reactivex.Observable
 import org.fs.todo.model.Entry
 
 interface EntryRepository {
   // pagination for 35 items per page
-  fun all(createdAt: Long, take: Int = 35): Flowable<List<Entry>>
-  fun active(createdAt: Long, take: Int = 35): Flowable<List<Entry>>
-  fun closed(createdAt: Long, take: Int = 35): Flowable<List<Entry>>
+  fun all(): Observable<List<Entry>>
+  fun loadByState(state: State): Observable<List<Entry>>
   fun create(entry: Entry): Completable
   fun update(entry: Entry): Completable
   fun delete(entry: Entry): Completable

@@ -15,16 +15,7 @@
  */
 package org.fs.todo.view
 
-import io.reactivex.Observable
 import org.fs.architecture.mvi.common.View
-import org.fs.todo.model.EntryModel
-import org.fs.todo.model.event.LoadMoreEvent
-import org.fs.todo.model.event.NewEntryEvent
-import org.fs.todo.model.event.RefreshEvent
+import org.fs.todo.model.Entry
 
-
-interface EntryFragmentView: View {
-  fun loadMore(): Observable<LoadMoreEvent>
-  fun refresh(): Observable<RefreshEvent>
-  fun newEntry(): Observable<NewEntryEvent>
-}
+interface EntryFragmentView: View<List<Entry>>
