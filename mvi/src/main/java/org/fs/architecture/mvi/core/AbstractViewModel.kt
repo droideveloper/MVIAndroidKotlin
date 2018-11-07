@@ -49,6 +49,8 @@ abstract class AbstractViewModel<T, D, V>(protected val view: V): ViewModel<T> w
       .subscribe(this::accept)
   }
 
+  override fun detach() = disposeBag.clear()
+
   override fun storage(): Observable<T> = storage.hide()
 
   override fun state(): Observable<SyncState> = storage().map { item -> item.state }
