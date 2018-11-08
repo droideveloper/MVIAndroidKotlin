@@ -16,8 +16,8 @@
 
 package org.fs.todo.model.entity
 
-enum class Display {
-  ALL,
-  ACTIVE,
-  COMPLETED
+enum class Display(val title: String) {
+  ALL("All"),
+  ACTIVE("Active"),
+  COMPLETED("Inactive");
 }

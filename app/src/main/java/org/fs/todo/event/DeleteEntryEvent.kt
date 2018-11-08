@@ -1,5 +1,5 @@
 /*
- * MVI App Copyright (C) 2018 Fatih.
+ * MVI App Android Kotlin Copyright (C) 2018 Fatih, Open Source.
  *  
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,19 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fs.todo.util
 
-sealed class C {
-  companion object {
-    const val DATABASE_NAME = "todo.db"
-    const val DATABASE_VERSION = 1
+package org.fs.todo.event
 
-    const val ENTRY_TABLE_NAME = "entries"
+import org.fs.architecture.mvi.common.Event
+import org.fs.todo.model.entity.Entry
 
-
-    const val REFRESH = 0x01
-    const val CREATE = 0x02
-    const val DELETE = 0x03
-    const val UPDATE = 0x04
-  }
-}
+data class DeleteEntryEvent(val entry: Entry): Event
