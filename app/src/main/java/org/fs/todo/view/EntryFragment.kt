@@ -21,20 +21,21 @@ import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import io.reactivex.functions.Consumer
 import kotlinx.android.synthetic.main.view_entry_fragment.*
-import org.fs.architecture.mvi.common.BusManager
-import org.fs.architecture.mvi.common.Model
-import org.fs.architecture.mvi.common.Operation
+import org.fs.architecture.mvi.common.*
 import org.fs.architecture.mvi.core.AbstractFragment
 import org.fs.architecture.mvi.util.ObservableList
 import org.fs.architecture.mvi.util.plusAssign
 import org.fs.rx.extensions.v4.util.refreshes
 import org.fs.todo.R
+import org.fs.todo.common.RecyclerViewSwipeObservable
+import org.fs.todo.event.DeleteEntryEvent
 import org.fs.todo.event.RefreshEvent
 import org.fs.todo.model.entity.Entry
 import org.fs.todo.model.EntryModel
 import org.fs.todo.model.entity.Display
 import org.fs.todo.util.C
 import org.fs.todo.util.bind
+import org.fs.todo.util.log
 import org.fs.todo.view.adapter.EntryAdapter
 import org.fs.todo.vm.EntryFragmentViewModel
 import javax.inject.Inject
@@ -108,13 +109,61 @@ class EntryFragment: AbstractFragment<EntryModel, List<Entry>, EntryFragmentView
       .map { if (it is Operation) return@map it.type == C.REFRESH else return@map false }
       .subscribe(viewSwipeRefreshLayout::bind)
 
+    disposeBag += RecyclerViewSwipeObservable(viewRecycler)
+      .map { index -> dataSet[index] }
+      .map { entry -> DeleteEntryEvent(entry) }
+      .subscribe(this::accept)
+
     disposeBag += BusManager.add(Consumer { evt -> accept(evt) })
 
     checkIfInitialLoadNeeded()
   }
 
   override fun render(model: Model<List<Entry>>) {
-
+    val state = model.state
+    when(state) {
+      is Operation -> when (state.type) {
+        C.CREATE -> {
+          if (display == Display.ALL || display == Display.ACTIVE) {
+            dataSet.addAll(model.data)
+          }
+        }
+        C.UPDATE -> {
+          val entry = model.data.firstOrNull() ?: Entry.EMPTY
+          if (display == Display.ALL) {
+            if (entry != Entry.EMPTY) {
+              val position = dataSet.indexOfFirst { e -> e.entryId == entry.entryId }
+              if (position != -1) {
+                dataSet[position] = entry
+              }
+            }
+          } else if (display == Display.ACTIVE || display == Display.COMPLETED) {
+            if (entry != Entry.EMPTY) {
+              val position = dataSet.indexOfFirst { e -> e.entryId == entry.entryId }
+              if (position != -1) {
+                dataSet.removeAt(position)
+              }
+            }
+          }
+        }
+        C.DELETE -> {
+          val entry = model.data.firstOrNull() ?: Entry.EMPTY
+          if (entry != Entry.EMPTY) {
+            val position = dataSet.indexOfFirst { e -> e.entryId == entry.entryId }
+            if (position != -1) {
+              dataSet.removeAt(position)
+            }
+          }
+        }
+      }
+      is Idle -> {
+        val data = model.data
+        if (data.isNotEmpty()) {
+          dataSet.addAll(data)
+        }
+      }
+      is Failure -> log(state.error)
+    }
   }
 
   private fun checkIfInitialLoadNeeded() {

@@ -15,7 +15,6 @@
  */
 package org.fs.todo.vm
 
-import android.arch.persistence.room.Delete
 import org.fs.architecture.mvi.common.Event
 import org.fs.architecture.mvi.common.ForFragment
 import org.fs.architecture.mvi.common.Idle

@@ -1,5 +1,5 @@
 /*
- * MVI App Copyright (C) 2018 Fatih.
+ * MVI App Android Kotlin Copyright (C) 2018 Fatih, Open Source.
  *  
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,9 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fs.todo.event
 
-import org.fs.architecture.mvi.common.Event
+package org.fs.todo.intent
+
+import org.fs.architecture.mvi.common.Idle
+import org.fs.architecture.mvi.common.ReducerIntent
+import org.fs.todo.model.DisplayModel
 import org.fs.todo.model.entity.Display
 
-data class TabSelectedEvent(val display: Display): Event
+class TabSelectIntent(private val display: Display): ReducerIntent<DisplayModel>() {
+
+  override fun invoke(model: DisplayModel): DisplayModel = model.copy(state = Idle, data = display)
+}
