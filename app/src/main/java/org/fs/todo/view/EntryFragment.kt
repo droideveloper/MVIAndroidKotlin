@@ -19,6 +19,7 @@ import android.os.Bundle
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import io.reactivex.functions.Consumer
 import kotlinx.android.synthetic.main.view_entry_fragment.*
 import org.fs.architecture.mvi.common.*
@@ -164,6 +165,7 @@ class EntryFragment: AbstractFragment<EntryModel, List<Entry>, EntryFragmentView
       }
       is Failure -> log(state.error)
     }
+    log(Log.WARN, model.toString())
   }
 
   private fun checkIfInitialLoadNeeded() {

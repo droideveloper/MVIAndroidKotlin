@@ -1,8 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
 /*
- * MVI App Copyright (C) 2018 Fatih.
- *
+ * MVI App Android Kotlin Copyright (C) 2018 Fatih, Open Source.
+ *  
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,10 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- -->
-<android.support.constraint.ConstraintLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent">
 
-</android.support.constraint.ConstraintLayout>
+package org.fs.todo
+
+import dagger.android.AndroidInjector
+import dagger.android.support.DaggerApplication
+import org.fs.todo.di.DaggerAppComponent
+
+class App: DaggerApplication() {
+  override fun applicationInjector(): AndroidInjector<out DaggerApplication> = DaggerAppComponent.builder().create(this)
+}

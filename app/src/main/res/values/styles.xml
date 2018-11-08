@@ -14,7 +14,7 @@
   </style>
 
   <style name="TextAppearanceHint" parent="@style/TextAppearance.AppCompat">
-    <item name="android:textColor">@color/colorHintText</item>
+    <item name="android:textColor">@color/colorSecondaryText</item>
     <item name="android:textSize">14sp</item>
     <item name="android:textStyle">italic</item>
   </style>
