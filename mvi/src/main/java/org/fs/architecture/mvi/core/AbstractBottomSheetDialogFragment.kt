@@ -103,4 +103,6 @@ abstract class AbstractBottomSheetDialogFragment<T, D, VM>: BottomSheetDialogFra
 
   open fun viewEvents(): Observable<Event> = viewEvents.hide()
   override fun supportFragmentInjector(): AndroidInjector<Fragment> = supportFragmentInjector
+
+  public fun accept(event: Event) = viewEvents.accept(event)
 }

@@ -17,7 +17,7 @@ package org.fs.todo.model.db
 
 import android.arch.persistence.room.*
 import io.reactivex.Single
-import org.fs.todo.model.Entry
+import org.fs.todo.model.entity.Entry
 
 @Dao
 interface EntryDao {

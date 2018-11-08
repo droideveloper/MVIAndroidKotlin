@@ -87,4 +87,6 @@ abstract class AbstractActivity<T, D, VM>: AppCompatActivity(), LifecycleOwner, 
   }
 
   override fun supportFragmentInjector(): AndroidInjector<Fragment> = supportFragmentInjector
+
+  public fun accept(event: Event) = viewEvents.accept(event)
 }

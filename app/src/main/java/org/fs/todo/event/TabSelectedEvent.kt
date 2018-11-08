@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fs.todo.model.event;
+package org.fs.todo.event
 
 import org.fs.architecture.mvi.common.Event
-import org.fs.todo.model.Entry
 
-data class LoadMoreEvent(val entry: Entry) : Event
+data class TabSelectedEvent(val tabId: Int): Event

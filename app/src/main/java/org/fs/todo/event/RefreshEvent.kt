@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fs.todo.model
+package org.fs.todo.event;
 
-enum class EntryState {
-  ACTIVE,
-  CLOSED,
-  DELETED // will be for soft delete
-}
+import org.fs.architecture.mvi.common.Event
+import org.fs.todo.model.entity.Display
+import org.fs.todo.model.entity.Entry
+
+data class RefreshEvent(val display: Display): Event

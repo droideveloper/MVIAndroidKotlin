@@ -17,8 +17,8 @@ package org.fs.todo.repo
 
 import io.reactivex.Completable
 import io.reactivex.Observable
-import org.fs.todo.model.Entry
-import org.fs.todo.model.EntryState
+import org.fs.todo.model.entity.Entry
+import org.fs.todo.model.entity.EntryState
 
 interface EntryRepository {
   // pagination for 35 items per page

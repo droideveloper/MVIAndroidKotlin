@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fs.todo.model
+package org.fs.todo.model.entity
 
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.Ignore

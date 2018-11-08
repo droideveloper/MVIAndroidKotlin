@@ -20,7 +20,7 @@ import org.fs.architecture.mvi.common.ForFragment
 import org.fs.architecture.mvi.common.Idle
 import org.fs.architecture.mvi.common.Intent
 import org.fs.architecture.mvi.core.AbstractViewModel
-import org.fs.todo.model.Entry
+import org.fs.todo.model.entity.Entry
 import org.fs.todo.model.EntryModel
 import org.fs.todo.repo.EntryRepository
 import org.fs.todo.view.EntryFragmentView

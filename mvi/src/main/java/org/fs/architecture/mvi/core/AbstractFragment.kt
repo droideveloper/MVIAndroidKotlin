@@ -89,4 +89,6 @@ abstract class AbstractFragment<T, D, VM>: Fragment(), HasSupportFragmentInjecto
   open fun viewEvents(): Observable<Event> = viewEvents.hide()
 
   override fun supportFragmentInjector(): AndroidInjector<Fragment> = supportFragmentInjector
+
+  public fun accept(event: Event) = viewEvents.accept(event)
 }
