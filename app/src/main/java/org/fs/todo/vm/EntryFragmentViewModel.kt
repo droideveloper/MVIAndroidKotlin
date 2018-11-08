@@ -15,11 +15,17 @@
  */
 package org.fs.todo.vm
 
+import android.arch.persistence.room.Delete
 import org.fs.architecture.mvi.common.Event
 import org.fs.architecture.mvi.common.ForFragment
 import org.fs.architecture.mvi.common.Idle
 import org.fs.architecture.mvi.common.Intent
 import org.fs.architecture.mvi.core.AbstractViewModel
+import org.fs.todo.event.CreateEntryEvent
+import org.fs.todo.event.DeleteEntryEvent
+import org.fs.todo.event.RefreshEvent
+import org.fs.todo.event.UpdateEntryEvent
+import org.fs.todo.intent.*
 import org.fs.todo.model.entity.Entry
 import org.fs.todo.model.EntryModel
 import org.fs.todo.repo.EntryRepository
@@ -32,7 +38,11 @@ class EntryFragmentViewModel @Inject constructor(view: EntryFragmentView,
 
   override fun initState(): EntryModel = EntryModel(state = Idle, data = emptyList())
 
-  override fun toIntent(event: Event): Intent {
-    throw NotImplementedError("we can not recognize $event")
+  override fun toIntent(event: Event): Intent = when(event) {
+    is RefreshEvent -> RefreshIntent(event.display, entryRepository)
+    is CreateEntryEvent -> CreateEntryIntent(event.description, entryRepository)
+    is UpdateEntryEvent -> UpdateEntryIntent(event.entry, entryRepository)
+    is DeleteEntryEvent -> DeleteEntryIntent(event.entry, entryRepository)
+    else -> NothingIntent<EntryModel>()
   }
 }

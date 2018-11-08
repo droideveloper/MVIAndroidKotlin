@@ -1,5 +1,5 @@
 /*
- * MVI Todo Android Kotlin Copyright (C) 2018 Fatih, Open Source.
+ * MVI App Android Kotlin Copyright (C) 2018 Fatih, Open Source.
  *  
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,4 +19,4 @@ package org.fs.todo.event
 import org.fs.architecture.mvi.common.Event
 import org.fs.todo.model.entity.Entry
 
-data class UpdateEntryEvent(private val entry: Entry): Event
+data class UpdateEntryEvent(val entry: Entry): Event

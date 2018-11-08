@@ -19,16 +19,22 @@ import android.os.Bundle
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
+import io.reactivex.functions.Consumer
 import kotlinx.android.synthetic.main.view_entry_fragment.*
+import org.fs.architecture.mvi.common.BusManager
 import org.fs.architecture.mvi.common.Model
+import org.fs.architecture.mvi.common.Operation
 import org.fs.architecture.mvi.core.AbstractFragment
 import org.fs.architecture.mvi.util.ObservableList
+import org.fs.architecture.mvi.util.plusAssign
 import org.fs.rx.extensions.v4.util.refreshes
 import org.fs.todo.R
 import org.fs.todo.event.RefreshEvent
 import org.fs.todo.model.entity.Entry
 import org.fs.todo.model.EntryModel
 import org.fs.todo.model.entity.Display
+import org.fs.todo.util.C
+import org.fs.todo.util.bind
 import org.fs.todo.view.adapter.EntryAdapter
 import org.fs.todo.vm.EntryFragmentViewModel
 import javax.inject.Inject
@@ -93,12 +99,27 @@ class EntryFragment: AbstractFragment<EntryModel, List<Entry>, EntryFragmentView
     super.attach()
 
     disposeBag += viewSwipeRefreshLayout.refreshes()
-        .filter { it }
-        .map { RefreshEvent(display) }
-        .subscribe(this::accept)
+      .filter { it }
+      .doOnNext { dataSet.clear() }
+      .map { RefreshEvent(display) }
+      .subscribe(this::accept)
+
+    disposeBag += viewModel.state()
+      .map { if (it is Operation) return@map it.type == C.REFRESH else return@map false }
+      .subscribe(viewSwipeRefreshLayout::bind)
+
+    disposeBag += BusManager.add(Consumer { evt -> accept(evt) })
+
+    checkIfInitialLoadNeeded()
   }
 
   override fun render(model: Model<List<Entry>>) {
 
+  }
+
+  private fun checkIfInitialLoadNeeded() {
+    if (dataSet.isEmpty()) {
+      accept(RefreshEvent(display))
+    }
   }
 }

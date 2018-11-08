@@ -15,6 +15,7 @@
  */
 package org.fs.todo.util
 
+import android.support.v4.widget.SwipeRefreshLayout
 import android.util.Log
 import org.fs.todo.BuildConfig
 
@@ -24,4 +25,8 @@ inline fun <reified T> T.log(message: String)  {
   if (logEnabled()) {
     Log.println(Log.ERROR, classTag(), message)
   }
+}
+
+fun SwipeRefreshLayout.bind(refreshing: Boolean) {
+  isRefreshing = refreshing
 }
