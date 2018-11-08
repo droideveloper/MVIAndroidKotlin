@@ -24,13 +24,14 @@ import org.fs.todo.model.entity.Entry
 import org.fs.todo.model.entity.EntryState
 import org.fs.todo.repo.EntryRepository
 import org.fs.todo.util.C
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 class UpdateEntryIntent(private val entry: Entry, private val entryRepository: EntryRepository): ObservableIntent<EntryModel>() {
 
   override fun invoke(): Observable<Reducer<EntryModel>> {
     val state = if (entry.state == EntryState.ACTIVE) EntryState.CLOSED else EntryState.ACTIVE
-    val entry = entry.copy(state = state)
+    val entry = entry.copy(state = state, updatedAt = Date())
     return entryRepository.update(entry)
         .andThen(Observable.just(entry))
         .delay(500L, TimeUnit.MILLISECONDS)
