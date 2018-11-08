@@ -25,8 +25,8 @@
   android:layout_width="match_parent"
   android:layout_height="wrap_content">
 
-  <RadioButton
-    android:id="@+id/viewRadioButton"
+  <CheckBox
+    android:id="@+id/viewCheckBox"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginRight="8dip"
@@ -46,7 +46,7 @@
     android:textAppearance="@style/TextAppearanceNormal"
     tools:text="@string/app_name"
     support:layout_constraintStart_toStartOf="parent"
-    support:layout_constraintEnd_toStartOf="@+id/viewRadioButton"
+    support:layout_constraintEnd_toStartOf="@+id/viewCheckBox"
     support:layout_constraintTop_toTopOf="parent"
     support:layout_constraintBottom_toBottomOf="parent" />
 

@@ -21,7 +21,7 @@
   <item android:gravity="fill_horizontal">
     <shape android:shape="rectangle">
       <size android:height="1dip" />
-      <solid android:color="@android:color/darker_gray" />
+      <solid android:color="@color/colorStroke" />
     </shape>
   </item>
 </layer-list>

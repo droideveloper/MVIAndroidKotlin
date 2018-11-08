@@ -41,13 +41,13 @@ class EntryViewHolder(view: View): AbstractRecyclerViewHolder<Entry>(view) {
   constructor(parent: ViewGroup): this(parent.inflate(R.layout.view_entry_item))
 
   override fun bind(value: Entry) {
-    val state = value.state == EntryState.CLOSED || value.state == EntryState.DELETED
+    val state = value.state == EntryState.CLOSED
     val text = SpannableString(value.description)
     if (state) {
       text.setSpan(StrikethroughSpan(), 0, value.description.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
     }
     itemView.viewTextEntry.text = text
-    itemView.viewRadioButton.isChecked = state
+    itemView.viewCheckBox.isChecked = state
     itemView.alpha = if (state) 0.5f else 1f
 
     disposeBag += bindEntryUpdateEvent(value).subscribe(BusManager.Companion::send)
@@ -55,7 +55,7 @@ class EntryViewHolder(view: View): AbstractRecyclerViewHolder<Entry>(view) {
 
   override fun unbind() = disposeBag.clear()
 
-  private fun bindEntryUpdateEvent(entry: Entry): Observable<UpdateEntryEvent> = itemView.viewRadioButton.checkChanges()
+  private fun bindEntryUpdateEvent(entry: Entry): Observable<UpdateEntryEvent> = itemView.viewCheckBox.checkChanges()
     .map { UpdateEntryEvent(entry) }
 
 }
