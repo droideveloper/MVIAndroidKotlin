@@ -37,9 +37,9 @@ class RecyclerViewSwipeObservable(private val view: RecyclerView): Observable<In
     private val callback = object: ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.END) {
       override fun onMove(v: RecyclerView, h1: RecyclerView.ViewHolder, h2: RecyclerView.ViewHolder): Boolean = false
 
-      override fun onSwiped(viewHolder: RecyclerView.ViewHolder, position: Int) {
+      override fun onSwiped(viewHolder: RecyclerView.ViewHolder, id: Int) {
         if (!isDisposed) {
-          observer.onNext(position)
+          observer.onNext(viewHolder.adapterPosition)
         }
       }
     }
