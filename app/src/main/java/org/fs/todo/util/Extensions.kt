@@ -18,13 +18,22 @@ package org.fs.todo.util
 import android.support.v4.widget.SwipeRefreshLayout
 import android.util.Log
 import org.fs.todo.BuildConfig
+import java.io.PrintWriter
+import java.io.StringWriter
 
 inline fun <reified T> T.logEnabled(): Boolean = BuildConfig.DEBUG
 inline fun <reified T> T.classTag(): String = T::class.java.simpleName
-inline fun <reified T> T.log(message: String)  {
+inline fun <reified T> T.log(message: String) = log(Log.DEBUG, message)
+inline fun <reified T> T.log(level: Int, message: String)  {
   if (logEnabled()) {
-    Log.println(Log.ERROR, classTag(), message)
+    Log.println(level, classTag(), message)
   }
+}
+inline fun <reified T> T.log(error: Throwable) {
+  val sw = StringWriter()
+  val pw = PrintWriter(sw)
+  error.printStackTrace(pw)
+  log(Log.ERROR, sw.toString())
 }
 
 fun SwipeRefreshLayout.bind(refreshing: Boolean) {
