@@ -17,7 +17,7 @@ package org.fs.todo.util
 
 import android.arch.persistence.room.TypeConverter
 import org.fs.todo.model.entity.EntryState
-import java.lang.IllegalStateException
+import java.lang.RuntimeException
 
 sealed class EntryStateConverter {
   companion object {
@@ -28,7 +28,7 @@ sealed class EntryStateConverter {
       EntryState.ACTIVE.ordinal -> EntryState.ACTIVE
       EntryState.CLOSED.ordinal -> EntryState.CLOSED
       EntryState.DELETED.ordinal -> EntryState.DELETED
-      else -> throw IllegalStateException("state from database can not be converted into enum object $state")
+      else -> throw RuntimeException("state from database can not be converted into enum object $state")
     }
   }
 }
