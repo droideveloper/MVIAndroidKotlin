@@ -25,6 +25,7 @@ import org.fs.todo.model.entity.Entry
 import org.fs.todo.model.entity.EntryState
 import org.fs.todo.repo.EntryRepository
 import org.fs.todo.util.C
+import java.util.concurrent.TimeUnit
 
 class RefreshIntent(private val display: Display, private val entryRepository: EntryRepository): ObservableIntent<EntryModel>() {
 
@@ -34,7 +35,8 @@ class RefreshIntent(private val display: Display, private val entryRepository: E
       Display.ACTIVE -> entryRepository.loadByState(EntryState.ACTIVE)
       Display.COMPLETED -> entryRepository.loadByState(EntryState.CLOSED)
     }
-    return dataSource.subscribeOn(Schedulers.io())
+    return dataSource.delay(500L, TimeUnit.MILLISECONDS)
+      .subscribeOn(Schedulers.io())
       .map(this::bySuccess)
       .onErrorResumeNext(this::byFailure)
       .startWith(byInitial())

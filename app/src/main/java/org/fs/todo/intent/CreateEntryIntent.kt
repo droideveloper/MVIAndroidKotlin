@@ -26,6 +26,7 @@ import org.fs.todo.model.entity.EntryState
 import org.fs.todo.repo.EntryRepository
 import org.fs.todo.util.C
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 class CreateEntryIntent(private val text: String, private val entryRepository: EntryRepository): ObservableIntent<EntryModel>() {
 
@@ -33,6 +34,7 @@ class CreateEntryIntent(private val text: String, private val entryRepository: E
     val entry = Entry(description = text, state = EntryState.ACTIVE, createdAt = Date(), updatedAt = Date())
     return entryRepository.create(entry)
       .andThen(ObservableJoin.just(entry))
+      .delay(500L, TimeUnit.MILLISECONDS)
       .subscribeOn(Schedulers.io())
       .concatMap(this::bySuccess)
       .onErrorResumeNext(this::byFailure)

@@ -24,6 +24,7 @@ import org.fs.todo.model.entity.Entry
 import org.fs.todo.model.entity.EntryState
 import org.fs.todo.repo.EntryRepository
 import org.fs.todo.util.C
+import java.util.concurrent.TimeUnit
 
 class UpdateEntryIntent(private val entry: Entry, private val entryRepository: EntryRepository): ObservableIntent<EntryModel>() {
 
@@ -32,6 +33,7 @@ class UpdateEntryIntent(private val entry: Entry, private val entryRepository: E
     val entry = entry.copy(state = state)
     return entryRepository.update(entry)
         .andThen(Observable.just(entry))
+        .delay(500L, TimeUnit.MILLISECONDS)
         .subscribeOn(Schedulers.io())
         .concatMap(this::bySuccess)
         .onErrorResumeNext(this::byFailure)
