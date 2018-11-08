@@ -18,7 +18,9 @@ package org.fs.todo.view
 
 import android.os.Bundle
 import android.text.TextUtils
+import android.view.Gravity
 import android.view.inputmethod.EditorInfo
+import android.widget.TextView
 import kotlinx.android.synthetic.main.view_main_activity.*
 import org.fs.architecture.mvi.common.BusManager
 import org.fs.architecture.mvi.common.Idle
@@ -87,7 +89,10 @@ class MainActivity: AbstractActivity<DisplayModel, Display, MainActivityViewMode
   private fun setUpTabLayout() {
     dataSet.forEach { display ->
       viewTabLayout.newTab().apply {
-        title = display.title
+        val textView = TextView(this@MainActivity)
+        textView.gravity = Gravity.CENTER
+        customView = textView
+        textView.text = display.title
         viewTabLayout.addTab(this)
       }
     }
