@@ -17,14 +17,19 @@ package org.fs.todo.view
 
 import android.os.Bundle
 import android.support.v4.content.res.ResourcesCompat
+import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.view_entry_fragment.*
 import org.fs.architecture.mvi.common.Model
 import org.fs.architecture.mvi.core.AbstractFragment
 import org.fs.architecture.mvi.util.ObservableList
+import org.fs.rx.extensions.v4.util.refreshes
 import org.fs.todo.R
-import org.fs.todo.model.Entry
+import org.fs.todo.event.RefreshEvent
+import org.fs.todo.model.entity.Entry
 import org.fs.todo.model.EntryModel
+import org.fs.todo.model.entity.Display
+import org.fs.todo.view.adapter.EntryAdapter
 import org.fs.todo.vm.EntryFragmentViewModel
 import javax.inject.Inject
 
@@ -32,7 +37,10 @@ class EntryFragment: AbstractFragment<EntryModel, List<Entry>, EntryFragmentView
 
   companion object {
     private const val BUNDLE_ARGS_DATA_SET = "bundle.args.data.set"
-    const val BUNDLE_ARGS_TYPE = "bundle.args.type"
+
+    @JvmStatic fun newInstance(display: Display): EntryFragment = EntryFragment().apply {
+      this.display = display
+    }
   }
 
   override val layoutRes: Int get() = R.layout.view_entry_fragment
@@ -40,8 +48,12 @@ class EntryFragment: AbstractFragment<EntryModel, List<Entry>, EntryFragmentView
   private val colorPrimaryDark by lazy { ResourcesCompat.getColor(resources, R.color.colorPrimaryDark, context?.theme) }
   private val colorPrimary by lazy { ResourcesCompat.getColor(resources, R.color.colorPrimary, context?.theme) }
   private val colorAccent by lazy { ResourcesCompat.getColor(resources, R.color.colorAccent, context?.theme) }
+  private val drawable by lazy { ResourcesCompat.getDrawable(resources, R.drawable.ic_list_seperator, context?.theme) }
 
   @Inject lateinit var dataSet: ObservableList<Entry>
+  @Inject lateinit var entryAdapter: EntryAdapter
+
+  private var display = Display.ALL
 
   override fun onSaveInstanceState(outState: Bundle) {
     super.onSaveInstanceState(outState)
@@ -68,8 +80,22 @@ class EntryFragment: AbstractFragment<EntryModel, List<Entry>, EntryFragmentView
       setHasFixedSize(true)
       setItemViewCacheSize(10)
       layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-      // TODO add adapter
+      adapter = entryAdapter
+      drawable?.let { d ->
+        val divider = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
+        divider.setDrawable(d)
+        addItemDecoration(divider)
+      }
     }
+  }
+
+  override fun attach() {
+    super.attach()
+
+    disposeBag += viewSwipeRefreshLayout.refreshes()
+        .filter { it }
+        .map { RefreshEvent(display) }
+        .subscribe(this::accept)
   }
 
   override fun render(model: Model<List<Entry>>) {

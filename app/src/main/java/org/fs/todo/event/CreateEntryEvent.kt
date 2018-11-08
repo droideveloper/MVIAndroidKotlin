@@ -13,10 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fs.todo.model.event;
+package org.fs.todo.event
 
 import org.fs.architecture.mvi.common.Event
-import org.fs.todo.model.Entry
-import java.util.*
 
-data class RefreshEvent(val entry: Entry = Entry.EMPTY): Event
+data class CreateEntryEvent(val description: String) : Event

@@ -19,7 +19,7 @@ import android.arch.persistence.room.Database
 import android.arch.persistence.room.RoomDatabase
 import android.arch.persistence.room.TypeConverters
 import org.fs.architecture.mvi.common.db.Converters
-import org.fs.todo.model.Entry
+import org.fs.todo.model.entity.Entry
 import org.fs.todo.util.C
 import org.fs.todo.util.EntryStateConverter
 

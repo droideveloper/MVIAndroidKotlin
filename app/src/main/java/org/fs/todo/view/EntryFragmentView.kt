@@ -16,6 +16,6 @@
 package org.fs.todo.view
 
 import org.fs.architecture.mvi.common.View
-import org.fs.todo.model.Entry
+import org.fs.todo.model.entity.Entry
 
 interface EntryFragmentView: View<List<Entry>>

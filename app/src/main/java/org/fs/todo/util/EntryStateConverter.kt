@@ -16,7 +16,7 @@
 package org.fs.todo.util
 
 import android.arch.persistence.room.TypeConverter
-import org.fs.todo.model.EntryState
+import org.fs.todo.model.entity.EntryState
 import java.lang.IllegalStateException
 
 sealed class EntryStateConverter {

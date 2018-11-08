@@ -13,12 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fs.todo.model
+package org.fs.todo.model.entity
 
-import org.fs.architecture.mvi.common.Model
-import org.fs.architecture.mvi.common.SyncState
-import org.fs.todo.model.entity.Entry
-
-data class EntryModel(
-    override val state: SyncState,
-    override val data: List<Entry>) : Model<List<Entry>>(state, data)
+enum class EntryState {
+  ACTIVE,
+  CLOSED,
+  DELETED // will be for soft delete
+}

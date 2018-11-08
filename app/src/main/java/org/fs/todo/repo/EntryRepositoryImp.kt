@@ -21,8 +21,8 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
-import org.fs.todo.model.Entry
-import org.fs.todo.model.EntryState
+import org.fs.todo.model.entity.Entry
+import org.fs.todo.model.entity.EntryState
 import org.fs.todo.model.db.EntryDao
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject

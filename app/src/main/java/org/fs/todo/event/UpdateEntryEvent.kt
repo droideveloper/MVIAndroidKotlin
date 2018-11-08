@@ -1,5 +1,5 @@
 /*
- * MVI App Copyright (C) 2018 Fatih.
+ * MVI Todo Android Kotlin Copyright (C) 2018 Fatih, Open Source.
  *  
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,12 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.fs.todo.model
 
-import org.fs.architecture.mvi.common.Model
-import org.fs.architecture.mvi.common.SyncState
+package org.fs.todo.event
+
+import org.fs.architecture.mvi.common.Event
 import org.fs.todo.model.entity.Entry
 
-data class EntryModel(
-    override val state: SyncState,
-    override val data: List<Entry>) : Model<List<Entry>>(state, data)
+data class UpdateEntryEvent(private val entry: Entry): Event
