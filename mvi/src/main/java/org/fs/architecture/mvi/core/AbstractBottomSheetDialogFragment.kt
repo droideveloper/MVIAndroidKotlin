@@ -37,7 +37,7 @@ import org.fs.architecture.mvi.common.ViewModel
 import org.fs.architecture.mvi.util.plusAssign
 import javax.inject.Inject
 
-abstract class AbstractBottomSheetDialogFragment<T, D, VM>: BottomSheetDialogFragment(), HasSupportFragmentInjector where VM: ViewModel<T>, T: Model<D> {
+abstract class AbstractBottomSheetDialogFragment<T, VM>: BottomSheetDialogFragment(), HasSupportFragmentInjector where VM: ViewModel<T>, T: Model<*> {
 
   protected val disposeBag by lazy { CompositeDisposable() }
   private val viewEvents by lazy { PublishRelay.create<Event>() }
@@ -85,13 +85,8 @@ abstract class AbstractBottomSheetDialogFragment<T, D, VM>: BottomSheetDialogFra
   open fun context(): Context? = context
   open fun supportFragmentManager(): FragmentManager = childFragmentManager
 
-  abstract fun render(model: Model<D>)
-
   open fun attach() {
     viewModel.attach()
-
-    disposeBag += viewModel.storage()
-      .subscribe(this::render)
   }
 
   open fun detach() {

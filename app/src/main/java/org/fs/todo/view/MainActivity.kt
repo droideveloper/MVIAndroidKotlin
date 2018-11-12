@@ -24,7 +24,6 @@ import android.widget.TextView
 import kotlinx.android.synthetic.main.view_main_activity.*
 import org.fs.architecture.mvi.common.BusManager
 import org.fs.architecture.mvi.common.Idle
-import org.fs.architecture.mvi.common.Model
 import org.fs.architecture.mvi.core.AbstractActivity
 import org.fs.architecture.mvi.util.plusAssign
 import org.fs.rx.extensions.design.util.selects
@@ -36,7 +35,7 @@ import org.fs.todo.model.DisplayModel
 import org.fs.todo.model.entity.Display
 import org.fs.todo.vm.MainActivityViewModel
 
-class MainActivity: AbstractActivity<DisplayModel, Display, MainActivityViewModel>(), MainActivityView {
+class MainActivity: AbstractActivity<DisplayModel, MainActivityViewModel>(), MainActivityView {
 
   override val layoutRes: Int get() = R.layout.view_main_activity
 
@@ -67,7 +66,7 @@ class MainActivity: AbstractActivity<DisplayModel, Display, MainActivityViewMode
     checkIfInitialLoadNeeded()
   }
 
-  override fun render(model: Model<Display>) {
+  override fun render(model: DisplayModel) {
     if (model.state is Idle) {
       if (display != model.data) {
         display = model.data

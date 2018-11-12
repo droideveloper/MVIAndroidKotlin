@@ -20,15 +20,13 @@ import android.content.Intent
 import android.support.v4.app.FragmentManager
 import io.reactivex.Observable
 
-interface View<D> {
+interface View {
   fun startActivity(intent: Intent?)
   fun startActivityForResult(intent: Intent?, requestCode: Int)
 
   fun finish()
   fun dismiss()
   fun supportFragmentManager(): FragmentManager
-
-  fun render(model: Model<D>)
 
   fun stringResource(stringRes: Int): String?
   fun isAvailable(): Boolean

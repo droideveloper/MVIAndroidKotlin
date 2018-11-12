@@ -41,7 +41,7 @@ import org.fs.todo.view.adapter.EntryAdapter
 import org.fs.todo.vm.EntryFragmentViewModel
 import javax.inject.Inject
 
-class EntryFragment: AbstractFragment<EntryModel, List<Entry>, EntryFragmentViewModel>(), EntryFragmentView {
+class EntryFragment: AbstractFragment<EntryModel, EntryFragmentViewModel>(), EntryFragmentView {
 
   companion object {
     private const val BUNDLE_ARGS_DATA_SET = "bundle.args.data.set"
@@ -100,6 +100,9 @@ class EntryFragment: AbstractFragment<EntryModel, List<Entry>, EntryFragmentView
   override fun attach() {
     super.attach()
 
+    disposeBag += viewModel.storage()
+        .subscribe(this::render)
+
     disposeBag += viewSwipeRefreshLayout.refreshes()
       .filter { it }
       .doOnNext { dataSet.clear() }
@@ -120,7 +123,7 @@ class EntryFragment: AbstractFragment<EntryModel, List<Entry>, EntryFragmentView
     checkIfInitialLoadNeeded()
   }
 
-  override fun render(model: Model<List<Entry>>) {
+  override fun render(model: EntryModel) {
     val state = model.state
     when(state) {
       is Operation -> when (state.type) {
@@ -165,7 +168,6 @@ class EntryFragment: AbstractFragment<EntryModel, List<Entry>, EntryFragmentView
       }
       is Failure -> log(state.error)
     }
-    log(Log.WARN, model.toString())
   }
 
   private fun checkIfInitialLoadNeeded() {

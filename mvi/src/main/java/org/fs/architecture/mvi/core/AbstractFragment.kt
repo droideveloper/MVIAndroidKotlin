@@ -35,7 +35,7 @@ import org.fs.architecture.mvi.common.ViewModel
 import org.fs.architecture.mvi.util.plusAssign
 import javax.inject.Inject
 
-abstract class AbstractFragment<T, D, VM>: Fragment(), HasSupportFragmentInjector where VM: ViewModel<T>, T: Model<D> {
+abstract class AbstractFragment<T, VM>: Fragment(), HasSupportFragmentInjector where VM: ViewModel<T>, T: Model<*> {
 
   protected val disposeBag by lazy { CompositeDisposable() }
   private val viewEvents by lazy { PublishRelay.create<Event>() }
@@ -70,13 +70,9 @@ abstract class AbstractFragment<T, D, VM>: Fragment(), HasSupportFragmentInjecto
   open fun context(): Context? = context
   open fun supportFragmentManager(): FragmentManager = childFragmentManager
 
-  abstract fun render(model: Model<D>)
 
   open fun attach() {
     viewModel.attach()
-
-    disposeBag += viewModel.storage()
-      .subscribe(this::render)
   }
 
   open fun detach() {
