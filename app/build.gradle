@@ -44,7 +44,7 @@ androidExtensions {
 }
 
 dependencies {
-  implementation 'org.fs.architecture:mvi:0.0.22'
+  implementation 'org.fs.architecture:mvi:0.0.23'
   kapt "android.arch.persistence.room:compiler:$ROOM_VERSION"
   kapt "com.google.dagger:dagger-compiler:$DAGGER_VERSION"
   kapt "com.google.dagger:dagger-android-processor:$DAGGER_VERSION"

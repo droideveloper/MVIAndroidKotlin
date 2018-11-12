@@ -33,7 +33,7 @@ import javax.inject.Inject
 
 @ForFragment
 class EntryFragmentViewModel @Inject constructor(view: EntryFragmentView,
-    private val entryRepository: EntryRepository) : AbstractViewModel<EntryModel, List<Entry>, EntryFragmentView>(view) {
+    private val entryRepository: EntryRepository) : AbstractViewModel<EntryModel, EntryFragmentView>(view) {
 
   override fun initState(): EntryModel = EntryModel(state = Idle, data = emptyList())
 

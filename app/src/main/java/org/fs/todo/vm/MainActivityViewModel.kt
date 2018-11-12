@@ -30,7 +30,7 @@ import org.fs.todo.view.MainActivityView
 import javax.inject.Inject
 
 @ForActivity
-class MainActivityViewModel @Inject constructor(view: MainActivityView): AbstractViewModel<DisplayModel, Display, MainActivityView>(view) {
+class MainActivityViewModel @Inject constructor(view: MainActivityView): AbstractViewModel<DisplayModel, MainActivityView>(view) {
 
   override fun initState(): DisplayModel = DisplayModel(state = Idle, data = Display.ALL)
 

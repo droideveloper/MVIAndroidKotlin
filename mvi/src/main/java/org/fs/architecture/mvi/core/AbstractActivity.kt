@@ -34,7 +34,7 @@ import org.fs.architecture.mvi.common.ViewModel
 import org.fs.architecture.mvi.util.plusAssign
 import javax.inject.Inject
 
-abstract class AbstractActivity<T, D, VM>: AppCompatActivity(), LifecycleOwner, LifecycleObserver, HasSupportFragmentInjector where VM: ViewModel<T>, T: Model<D> {
+abstract class AbstractActivity<T, VM>: AppCompatActivity(), LifecycleOwner, LifecycleObserver, HasSupportFragmentInjector where VM: ViewModel<T>, T: Model<*> {
 
   protected val disposeBag by lazy { CompositeDisposable() }
   private val viewEvents by lazy { PublishRelay.create<Event>() }
@@ -70,15 +70,10 @@ abstract class AbstractActivity<T, D, VM>: AppCompatActivity(), LifecycleOwner, 
 
   open fun viewEvents(): Observable<Event> = viewEvents.hide()
 
-  abstract fun render(model: Model<D>)
-
   abstract fun setUp(state: Bundle?)
 
   @OnLifecycleEvent(Lifecycle.Event.ON_START) open fun attach() {
     viewModel.attach()
-
-    disposeBag += viewModel.storage()
-      .subscribe(this::render)
   }
 
   @OnLifecycleEvent(Lifecycle.Event.ON_STOP) open fun detach() {

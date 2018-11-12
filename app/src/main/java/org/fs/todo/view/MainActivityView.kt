@@ -17,6 +17,9 @@
 package org.fs.todo.view
 
 import org.fs.architecture.mvi.common.View
+import org.fs.todo.model.DisplayModel
 import org.fs.todo.model.entity.Display
 
-interface MainActivityView: View<Display>
+interface MainActivityView: View {
+  fun render(model: DisplayModel)
+}

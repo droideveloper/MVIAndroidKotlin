@@ -24,7 +24,7 @@ import org.fs.architecture.mvi.util.plusAssign
 import org.fs.architecture.mvi.util.toIntent
 import org.fs.architecture.mvi.util.toReducer
 
-abstract class AbstractViewModel<T, D, V>(protected val view: V): ViewModel<T> where V: View<D>, T: Model<D> {
+abstract class AbstractViewModel<T, V>(protected val view: V): ViewModel<T> where V: View, T: Model<*> {
 
   protected val disposeBag by lazy { CompositeDisposable() }
 
