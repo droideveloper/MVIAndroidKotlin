@@ -15,7 +15,7 @@ buildscript {
     RETROFIT_CONVERTER_VERSION = "2.4.0"
     DAGGER_VERSION = "2.17"
     ROOM_VERSION = "1.1.1"
-    UIBINDING_VERSION = "0.0.16"
+    UIBINDING_VERSION = "0.0.18"
     GLIDE_VERSION = "4.8.0"
   }
   repositories {
