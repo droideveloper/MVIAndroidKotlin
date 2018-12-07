@@ -2,7 +2,7 @@
 
 buildscript {
   ext {
-    KOTLIN_VERSION = '1.3.10'
+    KOTLIN_VERSION = '1.3.11'
     GRADLE_TOOLS_VERSION = "3.2.1"
     SUPPORT_VERSION = "28.0.0"
     RX_ANDROID_VERSION = "2.0.2"
@@ -15,7 +15,7 @@ buildscript {
     RETROFIT_CONVERTER_VERSION = "2.4.0"
     DAGGER_VERSION = "2.17"
     ROOM_VERSION = "1.1.1"
-    UIBINDING_VERSION = "0.0.18"
+    UIBINDING_VERSION = "0.0.19"
     GLIDE_VERSION = "4.8.0"
   }
   repositories {
