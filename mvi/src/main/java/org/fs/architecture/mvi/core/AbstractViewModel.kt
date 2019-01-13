@@ -15,6 +15,7 @@
  */
 package org.fs.architecture.mvi.core
 
+import android.util.Log
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -24,21 +25,29 @@ import org.fs.architecture.mvi.util.plusAssign
 import org.fs.architecture.mvi.util.toIntent
 import org.fs.architecture.mvi.util.toReducer
 
-abstract class AbstractViewModel<T, V>(protected val view: V): ViewModel<T> where V: View, T: Model<*> {
+abstract class AbstractViewModel<T, V>(protected val view: V, initState: T): ViewModel<T> where V: View, T: Model<*> {
 
   protected val disposeBag by lazy { CompositeDisposable() }
 
   private val intents by lazy { PublishRelay.create<Intent>() }
 
-  private val storage by lazy {
-    intents.hide()
-        .toReducer<T>()
-        .observeOn(AndroidSchedulers.mainThread())
-        .scan(initState()) { o, reducer -> reducer.invoke(o) }
-        .replay(1)
-  }
+  protected var debugMode = true
 
-  protected abstract fun initState(): T
+  private val storage = intents.doOnNext { intent ->
+    if (debugMode) {
+      Log.e(AbstractViewModel::class.java.simpleName, "intent: $intent")
+    }
+  }.toReducer<T>()
+    .doOnNext { reducer ->
+      if (debugMode) {
+        Log.e(AbstractViewModel::class.java.simpleName, "reducer: $reducer")
+      }
+    }
+    .observeOn(AndroidSchedulers.mainThread())
+    .scan(initState) { o, reducer -> reducer.invoke(o) }
+    .replay(1)
+
+
   protected abstract fun toIntent(event: Event): Intent
 
   override fun attach() {

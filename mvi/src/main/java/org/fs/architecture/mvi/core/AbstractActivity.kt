@@ -15,7 +15,6 @@
  */
 package org.fs.architecture.mvi.core
 
-import android.arch.lifecycle.*
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -31,15 +30,13 @@ import io.reactivex.disposables.CompositeDisposable
 import org.fs.architecture.mvi.common.Event
 import org.fs.architecture.mvi.common.Model
 import org.fs.architecture.mvi.common.ViewModel
-import org.fs.architecture.mvi.util.plusAssign
 import javax.inject.Inject
 
-abstract class AbstractActivity<T, VM>: AppCompatActivity(), LifecycleOwner, LifecycleObserver, HasSupportFragmentInjector where VM: ViewModel<T>, T: Model<*> {
+abstract class AbstractActivity<T, VM>: AppCompatActivity(), HasSupportFragmentInjector where VM: ViewModel<T>, T: Model<*> {
 
   protected val disposeBag by lazy { CompositeDisposable() }
   private val viewEvents by lazy { PublishRelay.create<Event>() }
 
-  private val lifecycle by lazy { LifecycleRegistry(this) }
 
   abstract val layoutRes: Int
 
@@ -51,15 +48,7 @@ abstract class AbstractActivity<T, VM>: AppCompatActivity(), LifecycleOwner, Lif
     super.onCreate(savedInstanceState)
     setContentView(layoutRes)
     setUp(savedInstanceState ?: intent.extras)
-    lifecycle.addObserver(this)
   }
-
-  override fun onDestroy() {
-    lifecycle.removeObserver(this)
-    super.onDestroy()
-  }
-
-  override fun getLifecycle(): Lifecycle = lifecycle
 
   open fun dismiss() = Unit
   open fun isAvailable(): Boolean = !isFinishing
@@ -72,11 +61,19 @@ abstract class AbstractActivity<T, VM>: AppCompatActivity(), LifecycleOwner, Lif
 
   abstract fun setUp(state: Bundle?)
 
-  @OnLifecycleEvent(Lifecycle.Event.ON_START) open fun attach() {
+  override fun onStart() = super.onStart().also {
+    attach()
+  }
+
+  override fun onStop() = detach().also {
+    super.onStop()
+  }
+
+  open fun attach() {
     viewModel.attach()
   }
 
-  @OnLifecycleEvent(Lifecycle.Event.ON_STOP) open fun detach() {
+  open fun detach() {
     disposeBag.clear()
     viewModel.detach()
   }
