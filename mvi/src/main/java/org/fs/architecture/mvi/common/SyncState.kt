@@ -21,5 +21,9 @@ object Idle: SyncState() {
   override fun toString(): String = "idle"
 }
 
-data class Operation(val type: Int): SyncState() // with this we can extend it through
-data class Failure(val error: Throwable): SyncState()
+data class Operation(val type: Int, val initialState: Boolean = false): SyncState() { // with this we can extend it through
+  override fun toString(): String = "Operation of $type with state $initialState"
+}
+data class Failure(val error: Throwable): SyncState() {
+  override fun toString(): String = "error with: ${error.localizedMessage}"
+}
