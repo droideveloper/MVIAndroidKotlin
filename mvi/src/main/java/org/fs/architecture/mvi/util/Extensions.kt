@@ -72,8 +72,15 @@ fun <T: Any> T?.isNotNullOrEmpty(): Boolean = !isNullOrEmpty()
 fun isApiAvailable(requiredSdkVersion: Int): Boolean = Build.VERSION.SDK_INT >= requiredSdkVersion
 
 // check not null thing
-fun <T: Any> T?.checkNotNull(errorString: String = "$this is null") { if (isNullOrEmpty()) throw RuntimeException(errorString) }
-fun Boolean.throwIfConditionFails(errorString: String = "$this failed since it won't meet true") = { if (!this) throw RuntimeException(errorString) }
+fun <T: Any> T?.checkNotNull(errorString: String = "$this is null") = when {
+  isNullOrEmpty() -> throw RuntimeException(errorString)
+  else -> Unit
+}
+
+fun Boolean.throwIfConditionFails(errorString: String = "$this failed since it won't meet true") = when {
+  !this -> throw RuntimeException(errorString)
+  else -> Unit
+}
 
 // layout inflater better access for usage and others
 fun ViewGroup.layoutInflaterFactory(): LayoutInflater = LayoutInflater.from(context)
