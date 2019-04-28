@@ -13,6 +13,8 @@ buildscript {
     RETROFIT_VERSION = "2.4.0"
     RETROFIT_ADAPTER_VERSION = "2.4.0"
     RETROFIT_CONVERTER_VERSION = "2.4.0"
+    SERILIZATION_VERSION = "0.10.0"
+    SERILIZATION_RETROFIT_VERSION = "0.3.0"
     DAGGER_VERSION = "2.17"
     ROOM_VERSION = "1.1.1"
     UIBINDING_VERSION = "0.0.19"
@@ -25,6 +27,7 @@ buildscript {
   dependencies {
     classpath "com.android.tools.build:gradle:$GRADLE_TOOLS_VERSION"
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$KOTLIN_VERSION"
+    classpath "org.jetbrains.kotlin:kotlin-serialization:$KOTLIN_VERSION"
 
     // NOTE: Do not place your application dependencies here; they belong
     // in the individual module build.gradle files
