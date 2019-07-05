@@ -15,8 +15,8 @@
  */
 package org.fs.architecture.mvi.core
 
-import android.support.v7.widget.RecyclerView
 import android.view.View
+import androidx.recyclerview.widget.RecyclerView
 
 abstract class AbstractRecyclerViewHolder<D>(view: View): RecyclerView.ViewHolder(view) {
 
