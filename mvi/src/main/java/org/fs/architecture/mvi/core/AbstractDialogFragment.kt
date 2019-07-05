@@ -17,13 +17,13 @@ package org.fs.architecture.mvi.core
 
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.DialogFragment
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentTransaction
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import com.jakewharton.rxrelay2.PublishRelay
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -34,7 +34,6 @@ import io.reactivex.disposables.CompositeDisposable
 import org.fs.architecture.mvi.common.Event
 import org.fs.architecture.mvi.common.Model
 import org.fs.architecture.mvi.common.ViewModel
-import org.fs.architecture.mvi.util.plusAssign
 import javax.inject.Inject
 
 abstract class AbstractDialogFragment<T, VM>: DialogFragment(), HasSupportFragmentInjector where VM: ViewModel<T>, T: Model<*> {

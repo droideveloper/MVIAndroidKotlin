@@ -15,16 +15,16 @@
  */
 package org.fs.architecture.mvi.common.db
 
-import android.arch.persistence.room.TypeConverter
+import androidx.room.TypeConverter
 import java.util.*
-
 
 sealed class Converters {
 
   companion object {
 
     // Date conversion
-    @JvmStatic @TypeConverter fun fromTimestamp(value: Long?): Date? = when(value) {
+    @JvmStatic @TypeConverter
+    fun fromTimestamp(value: Long?): Date? = when(value) {
       null -> null
       else -> Date(value)
     }

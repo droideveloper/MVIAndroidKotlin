@@ -15,7 +15,7 @@
  */
 package org.fs.architecture.mvi.core
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import org.fs.architecture.mvi.common.PropertyChangedListener
 import org.fs.architecture.mvi.util.ObservableList
 

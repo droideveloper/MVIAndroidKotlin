@@ -16,11 +16,11 @@
 package org.fs.architecture.mvi.util
 
 import android.os.Build
-import android.support.annotation.LayoutRes
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.LayoutRes
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
