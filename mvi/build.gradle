@@ -9,7 +9,7 @@ android {
     minSdkVersion 16
     targetSdkVersion 29
     versionCode 1
-    versionName "2.0.0"
+    versionName "2.0.1"
   }
 
   lintOptions {
@@ -83,7 +83,7 @@ dependencies {
 ext {
   PUBLISH_GROUP_ID = 'org.fs.architecture'
   PUBLISH_ARTIFACT_ID = 'mvi'
-  PUBLISH_VERSION = '2.0.0'
+  PUBLISH_VERSION = '2.0.1'
 }
 
 apply from: 'https://raw.githubusercontent.com/blundell/release-android-library/master/android-release-aar.gradle'
