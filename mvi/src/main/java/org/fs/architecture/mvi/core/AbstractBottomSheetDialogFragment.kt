@@ -34,7 +34,6 @@ import io.reactivex.disposables.CompositeDisposable
 import org.fs.architecture.mvi.common.Event
 import org.fs.architecture.mvi.common.Model
 import org.fs.architecture.mvi.common.ViewModel
-import org.fs.architecture.mvi.util.plusAssign
 import javax.inject.Inject
 
 abstract class AbstractBottomSheetDialogFragment<T, VM>: BottomSheetDialogFragment(), HasSupportFragmentInjector where VM: ViewModel<T>, T: Model<*> {
