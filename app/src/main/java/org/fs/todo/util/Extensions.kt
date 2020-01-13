@@ -15,8 +15,8 @@
  */
 package org.fs.todo.util
 
-import android.support.v4.widget.SwipeRefreshLayout
 import android.util.Log
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import org.fs.todo.BuildConfig
 import java.io.PrintWriter
 import java.io.StringWriter

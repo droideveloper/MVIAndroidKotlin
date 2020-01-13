@@ -16,10 +16,9 @@
 package org.fs.todo.view
 
 import android.os.Bundle
-import android.support.v4.content.res.ResourcesCompat
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
+import androidx.core.content.res.ResourcesCompat
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import io.reactivex.functions.Consumer
 import kotlinx.android.synthetic.main.view_entry_fragment.*
 import org.fs.architecture.mvi.common.*
@@ -35,6 +34,10 @@ import org.fs.todo.model.entity.Entry
 import org.fs.todo.model.EntryModel
 import org.fs.todo.model.entity.Display
 import org.fs.todo.util.C
+import org.fs.todo.util.C.Companion.CREATE
+import org.fs.todo.util.C.Companion.DELETE
+import org.fs.todo.util.C.Companion.REFRESH
+import org.fs.todo.util.C.Companion.UPDATE
 import org.fs.todo.util.bind
 import org.fs.todo.util.log
 import org.fs.todo.view.adapter.EntryAdapter
@@ -100,9 +103,6 @@ class EntryFragment: AbstractFragment<EntryModel, EntryFragmentViewModel>(), Ent
   override fun attach() {
     super.attach()
 
-    disposeBag += viewModel.storage()
-        .subscribe(this::render)
-
     disposeBag += viewSwipeRefreshLayout.refreshes()
       .filter { it }
       .doOnNext { dataSet.clear() }
@@ -110,7 +110,7 @@ class EntryFragment: AbstractFragment<EntryModel, EntryFragmentViewModel>(), Ent
       .subscribe(this::accept)
 
     disposeBag += viewModel.state()
-      .map { if (it is Operation) return@map it.type == C.REFRESH else return@map false }
+      .map { if (it is Operation) return@map it.type == REFRESH else return@map false }
       .subscribe(viewSwipeRefreshLayout::bind)
 
     disposeBag += RecyclerViewSwipeObservable(viewRecycler)
@@ -118,21 +118,26 @@ class EntryFragment: AbstractFragment<EntryModel, EntryFragmentViewModel>(), Ent
       .map { entry -> DeleteEntryEvent(entry) }
       .subscribe(this::accept)
 
-    disposeBag += BusManager.add(Consumer { evt -> accept(evt) })
+    disposeBag += BusManager.add(Consumer { evt -> accept(evt).also {
+        log(evt.toString())
+      }
+    })
+
+    disposeBag += viewModel.storage()
+      .subscribe(::render)
 
     checkIfInitialLoadNeeded()
   }
 
   override fun render(model: EntryModel) {
-    val state = model.state
-    when(state) {
-      is Operation -> when (state.type) {
-        C.CREATE -> {
+    when (model.state) {
+      is Operation -> when (model.state.type) {
+        CREATE -> {
           if (display == Display.ALL || display == Display.ACTIVE) {
             dataSet.addAll(model.data)
           }
         }
-        C.UPDATE -> {
+        UPDATE -> {
           val entry = model.data.firstOrNull() ?: Entry.EMPTY
           if (display == Display.ALL) {
             if (entry != Entry.EMPTY) {
@@ -150,7 +155,7 @@ class EntryFragment: AbstractFragment<EntryModel, EntryFragmentViewModel>(), Ent
             }
           }
         }
-        C.DELETE -> {
+        DELETE -> {
           val entry = model.data.firstOrNull() ?: Entry.EMPTY
           if (entry != Entry.EMPTY) {
             val position = dataSet.indexOfFirst { e -> e.entryId == entry.entryId }
@@ -166,7 +171,7 @@ class EntryFragment: AbstractFragment<EntryModel, EntryFragmentViewModel>(), Ent
           dataSet.addAll(data)
         }
       }
-      is Failure -> log(state.error)
+      is Failure -> log(model.state.error)
     }
   }
 
