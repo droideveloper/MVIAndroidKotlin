@@ -61,7 +61,7 @@ class MainActivity: AbstractActivity<DisplayModel, MainActivityViewModel>(), Mai
     disposeBag += viewTabLayout.selects()
       .map { dataSet[it.position] }
       .map { TabSelectedEvent(it) }
-      .subscribe(this::accept)
+      .subscribe(::accept)
 
     checkIfInitialLoadNeeded()
   }

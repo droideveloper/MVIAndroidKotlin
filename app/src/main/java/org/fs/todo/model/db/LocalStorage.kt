@@ -15,9 +15,10 @@
  */
 package org.fs.todo.model.db
 
-import android.arch.persistence.room.Database
-import android.arch.persistence.room.RoomDatabase
-import android.arch.persistence.room.TypeConverters
+
+import androidx.room.Database
+import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import org.fs.architecture.mvi.common.db.Converters
 import org.fs.todo.model.entity.Entry
 import org.fs.todo.util.C

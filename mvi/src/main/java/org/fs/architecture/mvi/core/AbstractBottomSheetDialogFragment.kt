@@ -53,10 +53,8 @@ abstract class AbstractBottomSheetDialogFragment<T, VM>: BottomSheetDialogFragme
     setUp(savedInstanceState ?: arguments)
   }
 
-  override fun show(manager: FragmentManager?, tag: String?) {
-    if (manager != null) {
-      show(manager.beginTransaction(), tag)
-    }
+  override fun show(manager: FragmentManager, tag: String?) {
+    show(manager.beginTransaction(), tag)
   }
 
   override fun onStart() {
@@ -69,13 +67,8 @@ abstract class AbstractBottomSheetDialogFragment<T, VM>: BottomSheetDialogFragme
     super.onStop()
   }
 
-  override fun show(transaction: FragmentTransaction?, tag: String?): Int {
-    if (transaction != null) {
-      return transaction.add(this, tag)
-          .commit()
-    }
-    return -1
-  }
+  override fun show(transaction: FragmentTransaction, tag: String?): Int = transaction.add(this, tag)
+    .commit()
 
   open fun finish() = Unit
   open fun isAvailable(): Boolean = isAdded && activity != null

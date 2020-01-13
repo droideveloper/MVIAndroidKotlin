@@ -15,20 +15,15 @@
  */
 package org.fs.todo.model.db
 
-import android.arch.persistence.room.*
+import androidx.room.*
 import io.reactivex.Single
 import org.fs.todo.model.entity.Entry
 
-@Dao
-interface EntryDao {
+@Dao interface EntryDao {
 
-  @Query("SELECT * FROM entries")
-  fun load(): Single<List<Entry>>
+  @Query("SELECT * FROM entries") fun load(): Single<List<Entry>>
 
-  @Query("SELECT * FROM entries " +
-      "WHERE state == :state")
-  fun loadByState(state: Int): Single<List<Entry>>
-
+  @Query("SELECT * FROM entries WHERE state == :state") fun loadByState(state: Int): Single<List<Entry>>
 
   @Insert(onConflict = OnConflictStrategy.REPLACE) fun create(entry: Entry)
   @Update fun update(entry: Entry)

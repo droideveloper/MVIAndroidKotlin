@@ -15,7 +15,7 @@
  */
 package org.fs.todo.util
 
-import android.arch.persistence.room.TypeConverter
+import androidx.room.TypeConverter
 import org.fs.todo.model.entity.EntryState
 import java.lang.RuntimeException
 

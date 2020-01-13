@@ -16,8 +16,8 @@
 
 package org.fs.todo.di
 
-import android.arch.persistence.room.Room
 import android.content.Context
+import androidx.room.Room
 import dagger.Module
 import dagger.Provides
 import org.fs.todo.model.db.EntryDao
