@@ -1,5 +1,5 @@
 /*
- * MVI Kotlin Copyright (C) 2018 Fatih.
+ *  Copyright (C) 2020 Fatih, Upope Android Kotlin.
  *  
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,18 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.fs.architecture.mvi.common
 
-sealed class SyncState
+interface ModelFactory<M, T> where M: Model<T> {
 
-object Idle: SyncState() {
-  override fun toString(): String = "idle"
-}
+  val state: SyncState
+  val data: T
 
-data class Operation(val type: Int, val initialState: Boolean = false): SyncState() { // with this we can extend it through
-  override fun toString(): String = "Operation of type: $type with state: $initialState"
-}
+  val empty: T
 
-data class Failure(val error: Throwable): SyncState() {
-  override fun toString(): String = "error with: ${error.localizedMessage}\ndescription: $error"
+  fun copy(state: SyncState = this.state, data: T = this.data): M
 }

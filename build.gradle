@@ -2,6 +2,9 @@
 
 buildscript {
   ext {
+    AND_X_VER = "1.1.0"
+    AND_CORE_VER = "1.2.0"
+    MATER_VER = "1.1.0"
     KOTLIN_VERSION = '1.3.61'
     GRADLE_TOOLS_VERSION = '3.5.3'
     SUPPORT_VERSION = "28.0.0"
@@ -13,12 +16,10 @@ buildscript {
     OK_HTTP_VERSION = "3.11.0"
     OK_HTTP_OKIO_VERSION = "2.1.0"
     RETROFIT_VERSION = "2.4.0"
-    SERILIZATION_VERSION = "0.10.0"
-    SERILIZATION_RETROFIT_VERSION = "0.3.0"
     DAGGER_VERSION = "2.17"
     DATABASE_VERSION = "2.2.3"
     UIBINDING_VERSION = "2.0.0"
-    GLIDE_VERSION = "4.10.0"
+    GLIDE_VERSION = "4.11.0"
   }
   repositories {
     google()
@@ -27,7 +28,6 @@ buildscript {
   dependencies {
     classpath "com.android.tools.build:gradle:$GRADLE_TOOLS_VERSION"
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$KOTLIN_VERSION"
-    classpath "org.jetbrains.kotlin:kotlin-serialization:$KOTLIN_VERSION"
 
     // NOTE: Do not place your application dependencies here; they belong
     // in the individual module build.gradle files

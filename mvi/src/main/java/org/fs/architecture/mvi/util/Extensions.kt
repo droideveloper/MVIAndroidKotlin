@@ -28,6 +28,7 @@ import org.fs.architecture.mvi.common.*
 import java.io.File
 
 fun Observable<Event>.toIntent(block: (Event) -> Intent): Observable<Intent> = map(block)
+
 fun <T> Observable<Intent>.toReducer(): Observable<Reducer<T>> = concatMap { source ->
    if (source is ReducerIntent<*>) {
      val intent = source as? ReducerIntent<T>

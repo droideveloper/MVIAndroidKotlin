@@ -22,13 +22,19 @@ import io.reactivex.subjects.PublishSubject
 class BusManager private constructor() {
 
   companion object {
-    @JvmStatic private val imp = BusManager()
-    @JvmStatic private val rxBus = PublishSubject.create<Event>()
 
-    @JvmStatic fun <T: Event> send(event: T) = imp.post(event)
-    @JvmStatic fun add(observer: Consumer<Event>): Disposable = imp.register(observer)
+    private var instance: BusManager? = null
+
+    @JvmStatic fun shared(): BusManager = instance ?: synchronized(this) {
+      instance ?: BusManager().also { instance = it }
+    }
+
+    @JvmStatic fun <T: Event> send(event: T) = shared().post(event)
+    @JvmStatic fun add(observer: Consumer<Event>): Disposable = shared().register(observer)
   }
 
-  private fun <T: Event> post(event: T) = rxBus.onNext(event)
-  private fun register(observer: Consumer<Event>): Disposable = rxBus.subscribe(observer)
+  private val rx by lazy { PublishSubject.create<Event>() }
+
+  private fun <T: Event> post(event: T) = rx.onNext(event)
+  private fun register(observer: Consumer<Event>): Disposable = rx.subscribe(observer)
 }

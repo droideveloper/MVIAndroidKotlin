@@ -40,6 +40,7 @@ abstract class AbstractBottomSheetDialogFragment<T, VM>: BottomSheetDialogFragme
 
   protected val disposeBag by lazy { CompositeDisposable() }
   private val viewEvents by lazy { PublishRelay.create<Event>() }
+
   abstract val layoutRes: Int
 
   @Inject lateinit var viewModel: VM
