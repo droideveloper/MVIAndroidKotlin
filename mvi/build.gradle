@@ -53,6 +53,7 @@ dependencies {
   implementation "androidx.cardview:cardview:$ANDROID_X_VERSION"
   implementation "androidx.viewpager:viewpager:$ANDROID_X_VERSION"
 
+
   implementation "org.fs.rx.extensions:uibinding:$UIBINDING_VERSION"
 
   implementation "io.reactivex.rxjava2:rxandroid:$RX_ANDROID_VERSION"

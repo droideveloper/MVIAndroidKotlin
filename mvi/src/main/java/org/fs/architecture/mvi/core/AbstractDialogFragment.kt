@@ -70,6 +70,10 @@ abstract class AbstractDialogFragment<T, VM>: DialogFragment(), HasSupportFragme
   override fun show(transaction: FragmentTransaction, tag: String?): Int = transaction.add(this, tag)
     .commit()
 
+
+  override fun show(transaction: FragmentTransaction, tag: String?): Int = transaction.add(this, tag)
+    .commit()
+  
   open fun finish() = Unit
   open fun isAvailable(): Boolean = isAdded && activity != null
 

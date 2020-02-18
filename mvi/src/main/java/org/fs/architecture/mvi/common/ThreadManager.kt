@@ -21,7 +21,7 @@ import android.os.Looper
 sealed class ThreadManager {
 
   companion object {
-    @JvmStatic private val uiHandler = Handler(Looper.myLooper())
+    @JvmStatic private val uiHandler = Handler(Looper.getMainLooper())
     @JvmStatic private val DELAY_MS = 500L
 
     @JvmStatic fun runOnUiThread(task: Runnable) = uiHandler.post(task)
