@@ -62,17 +62,6 @@ abstract class AbstractDialogFragment<T, VM>: DialogFragment(), HasSupportFragme
     detach()
     super.onStop()
   }
-
-  override fun show(manager: FragmentManager, tag: String?) {
-    show(manager.beginTransaction(), tag)
-  }
-
-  override fun show(transaction: FragmentTransaction, tag: String?): Int = transaction.add(this, tag)
-    .commit()
-
-
-  override fun show(transaction: FragmentTransaction, tag: String?): Int = transaction.add(this, tag)
-    .commit()
   
   open fun finish() = Unit
   open fun isAvailable(): Boolean = isAdded && activity != null
