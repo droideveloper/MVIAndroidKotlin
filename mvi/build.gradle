@@ -5,6 +5,8 @@ apply plugin: 'kotlin-kapt'
 
 android {
   compileSdkVersion 29
+  buildToolsVersion "29.0.3"
+
   defaultConfig {
     minSdkVersion 16
     targetSdkVersion 29
@@ -50,8 +52,8 @@ dependencies {
   implementation "androidx.preference:preference:$AND_X_VER"
   implementation "com.google.android.material:material:$MATER_VER"
 
-  implementation "androidx.cardview:cardview:$ANDROID_X_VERSION"
-  implementation "androidx.viewpager:viewpager:$ANDROID_X_VERSION"
+  // implementation "androidx.cardview:cardview:$ANDROID_X_VERSION"
+  // implementation "androidx.viewpager:viewpager:$ANDROID_X_VERSION"
 
 
   implementation "org.fs.rx.extensions:uibinding:$UIBINDING_VERSION"
