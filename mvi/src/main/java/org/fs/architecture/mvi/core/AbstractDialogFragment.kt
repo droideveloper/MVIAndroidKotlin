@@ -21,29 +21,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
-import com.jakewharton.rxrelay2.PublishRelay
+import com.jakewharton.rxrelay3.PublishRelay
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasAndroidInjector
 import dagger.android.support.AndroidSupportInjection
-import dagger.android.support.HasSupportFragmentInjector
-import io.reactivex.Observable
-import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 import org.fs.architecture.mvi.common.Event
 import org.fs.architecture.mvi.common.Model
 import org.fs.architecture.mvi.common.ViewModel
 import javax.inject.Inject
 
-abstract class AbstractDialogFragment<T, VM>: DialogFragment(), HasSupportFragmentInjector where VM: ViewModel<T>, T: Model<*> {
+abstract class AbstractDialogFragment<T, VM>: DialogFragment(), HasAndroidInjector where VM: ViewModel<T>, T: Model<*> {
 
   protected val disposeBag by lazy { CompositeDisposable() }
   private val viewEvents by lazy { PublishRelay.create<Event>() }
   abstract val layoutRes: Int
 
   @Inject lateinit var viewModel: VM
-  @Inject lateinit var supportFragmentInjector: DispatchingAndroidInjector<Fragment>
+  @Inject lateinit var supportFragmentInjector: DispatchingAndroidInjector<Any>
 
   override fun onCreateView(factory: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = factory.inflate(layoutRes, container, false)
 
@@ -69,10 +68,6 @@ abstract class AbstractDialogFragment<T, VM>: DialogFragment(), HasSupportFragme
 
   override fun show(transaction: FragmentTransaction, tag: String?): Int = transaction.add(this, tag)
     .commit()
-
-
-  override fun show(transaction: FragmentTransaction, tag: String?): Int = transaction.add(this, tag)
-    .commit()
   
   open fun finish() = Unit
   open fun isAvailable(): Boolean = isAdded && activity != null
@@ -94,7 +89,7 @@ abstract class AbstractDialogFragment<T, VM>: DialogFragment(), HasSupportFragme
 
   open fun viewEvents(): Observable<Event> = viewEvents.hide()
 
-  override fun supportFragmentInjector(): AndroidInjector<Fragment> = supportFragmentInjector
+  override fun androidInjector(): AndroidInjector<Any> = supportFragmentInjector
 
   public fun accept(event: Event) = viewEvents.accept(event)
 }

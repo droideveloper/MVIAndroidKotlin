@@ -3,13 +3,21 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
+ext {
+  versionMajor = 3
+  versionMinor = 0
+
+  k100 = 100000
+  k10 = 10000
+  buildNumber = 0
+}
+
 android {
-  compileSdkVersion 29
+  compileSdkVersion 30
   defaultConfig {
     minSdkVersion 16
-    targetSdkVersion 29
-    versionCode 1
-    versionName "2.1.5"
+    versionCode versionCode(versionMajor, versionMinor, buildNumber, k100, k10)
+    versionName versionName(versionMajor, versionMinor, buildNumber)
   }
 
   lintOptions {
@@ -45,32 +53,21 @@ androidExtensions {
 
 dependencies {
   // this is for androidx compatibility
-  implementation "androidx.appcompat:appcompat:$AND_X_VER"
+  implementation "androidx.appcompat:appcompat:1.2.0"
   implementation "androidx.recyclerview:recyclerview:$AND_X_VER"
-  implementation "androidx.preference:preference:$AND_X_VER"
   implementation "com.google.android.material:material:$MATER_VER"
 
-  implementation "androidx.cardview:cardview:$ANDROID_X_VERSION"
-  implementation "androidx.viewpager:viewpager:$ANDROID_X_VERSION"
+  implementation "androidx.viewpager:viewpager:1.0.0"
 
+  implementation "com.squareup.retrofit2:converter-moshi:$RETROFIT_VERSION"
+  // rxjava3 call adapter
+  implementation "com.squareup.retrofit2:adapter-rxjava3:$RETROFIT_VERSION"
 
-  implementation "org.fs.rx.extensions:uibinding:$UIBINDING_VERSION"
-
-  implementation "io.reactivex.rxjava2:rxandroid:$RX_ANDROID_VERSION"
-  implementation "io.reactivex.rxjava2:rxkotlin:$RX_KOTLIN_VERSION"
-  implementation "com.jakewharton.rxrelay2:rxrelay:$RX_RELAY_KOTLIN"
+  implementation "io.reactivex.rxjava3:rxandroid:$RX_ANDROID_VERSION"
+  implementation "io.reactivex.rxjava3:rxkotlin:$RX_KOTLIN_VERSION"
+  implementation "com.jakewharton.rxrelay3:rxrelay:$RX_RELAY_KOTLIN"
 
   implementation "com.github.bumptech.glide:glide:$GLIDE_VERSION"
-
-  implementation "com.squareup.okhttp3:okhttp:$OK_HTTP_VERSION"
-  implementation "com.squareup.okhttp3:okhttp-urlconnection:$OK_HTTP_VERSION"
-
-  debugImplementation "com.squareup.okhttp3:logging-interceptor:$OK_HTTP_VERSION"
-  stagingImplementation "com.squareup.okhttp3:logging-interceptor:$OK_HTTP_VERSION"
-
-  implementation "com.squareup.retrofit2:retrofit:$RETROFIT_VERSION"
-  implementation "com.squareup.retrofit2:adapter-rxjava2:$RETROFIT_VERSION"
-  implementation "com.squareup.retrofit2:converter-moshi:$RETROFIT_VERSION"
 
   implementation "com.google.dagger:dagger:$DAGGER_VERSION"
   implementation "com.google.dagger:dagger-android:$DAGGER_VERSION"
@@ -80,16 +77,22 @@ dependencies {
   kapt "com.google.dagger:dagger-android-processor:$DAGGER_VERSION"
 
   implementation "androidx.room:room-runtime:$DATABASE_VERSION"
-  implementation "androidx.room:room-rxjava2:$DATABASE_VERSION"
-  kapt "androidx.room:room-compiler:$DATABASE_VERSION"
 
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$KOTLIN_VERSION"
+}
+
+private static def versionName(Integer versionMajor, Integer versionMinor, Integer buildNumber) {
+  return String.format("%d.%d.%d", versionMajor, versionMinor, buildNumber)
+}
+
+private static def versionCode(Integer versionMajor, Integer versionMinor, Integer buildNumber, Integer k100, Integer k10) {
+  return (versionMajor * k100) + (versionMinor * k10) + buildNumber
 }
 
 ext {
   PUBLISH_GROUP_ID = 'org.fs.architecture'
   PUBLISH_ARTIFACT_ID = 'mvi'
-  PUBLISH_VERSION = '2.1.5'
+  PUBLISH_VERSION = versionName(versionMajor, versionMinor, buildNumber)
 }
 
 apply from: 'https://raw.githubusercontent.com/blundell/release-android-library/master/android-release-aar.gradle'
