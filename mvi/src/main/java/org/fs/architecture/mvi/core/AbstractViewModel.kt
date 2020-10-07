@@ -15,10 +15,10 @@
  */
 package org.fs.architecture.mvi.core
 
-import com.jakewharton.rxrelay2.PublishRelay
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
+import com.jakewharton.rxrelay3.PublishRelay
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 import org.fs.architecture.mvi.common.*
 import org.fs.architecture.mvi.util.plusAssign
 import org.fs.architecture.mvi.util.toIntent

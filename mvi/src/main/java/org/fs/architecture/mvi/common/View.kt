@@ -18,7 +18,7 @@ package org.fs.architecture.mvi.common
 import android.content.Context
 import android.content.Intent
 import androidx.fragment.app.FragmentManager
-import io.reactivex.Observable
+import io.reactivex.rxjava3.core.Observable
 
 interface View {
   fun startActivity(intent: Intent?)

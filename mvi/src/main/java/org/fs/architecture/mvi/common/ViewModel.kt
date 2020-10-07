@@ -15,7 +15,8 @@
  */
 package org.fs.architecture.mvi.common
 
-import io.reactivex.Observable
+import io.reactivex.rxjava3.core.Observable
+
 
 interface ViewModel<T> {
   fun attach()

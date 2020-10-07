@@ -99,7 +99,7 @@ open class ObservableList<T>: ArrayList<T>() {
   }
 
   override fun removeAll(elements: Collection<T>): Boolean {
-    val index = Collections.indexOfSubList(this, ArrayList<T>(elements))
+    val index = Collections.indexOfSubList(this, ArrayList(elements))
     val size = elements.size
     val success = super.removeAll(elements)
     if (listeners.isNotEmpty()) {

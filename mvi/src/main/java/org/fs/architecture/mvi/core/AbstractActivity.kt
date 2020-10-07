@@ -18,30 +18,28 @@ package org.fs.architecture.mvi.core
 import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import com.jakewharton.rxrelay2.PublishRelay
+import com.jakewharton.rxrelay3.PublishRelay
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
-import dagger.android.support.HasSupportFragmentInjector
-import io.reactivex.Observable
-import io.reactivex.disposables.CompositeDisposable
+import dagger.android.HasAndroidInjector
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 import org.fs.architecture.mvi.common.Event
 import org.fs.architecture.mvi.common.Model
 import org.fs.architecture.mvi.common.ViewModel
 import javax.inject.Inject
 
-abstract class AbstractActivity<T, VM>: AppCompatActivity(), HasSupportFragmentInjector where VM: ViewModel<T>, T: Model<*> {
+abstract class AbstractActivity<T, VM>: AppCompatActivity(), HasAndroidInjector where VM: ViewModel<T>, T: Model<*> {
 
   protected val disposeBag by lazy { CompositeDisposable() }
   private val viewEvents by lazy { PublishRelay.create<Event>() }
 
-
   abstract val layoutRes: Int
 
   @Inject lateinit var viewModel: VM
-  @Inject lateinit var supportFragmentInjector: DispatchingAndroidInjector<Fragment>
+  @Inject lateinit var supportFragmentInjector: DispatchingAndroidInjector<Any>
 
   override fun onCreate(savedInstanceState: Bundle?) {
     AndroidInjection.inject(this)
@@ -78,7 +76,7 @@ abstract class AbstractActivity<T, VM>: AppCompatActivity(), HasSupportFragmentI
     viewModel.detach()
   }
 
-  override fun supportFragmentInjector(): AndroidInjector<Fragment> = supportFragmentInjector
+  override fun androidInjector(): AndroidInjector<Any> = supportFragmentInjector
 
   public fun accept(event: Event) = viewEvents.accept(event)
 }
